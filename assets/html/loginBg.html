@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="AestheticFluidBg.min.js"></script>
+<!--    <script src="WavyWavesBg.min.js"></script>-->
+</head>
+
+<body>
+
+<div id="box"></div>
+
+<script>
+    // 获取屏幕宽度和高度
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // 获取指定的 div 元素
+    const dynamicDiv = document.getElementById('box');
+
+    // 设置 div 的宽度和高度
+    dynamicDiv.style.width = screenWidth + 'px';
+    dynamicDiv.style.height = screenHeight + 'px';
+
+    // 添加窗口大小改变的监听器
+    window.addEventListener('resize', () => {
+        // 获取最新的屏幕宽度和高度
+        const newScreenWidth = window.innerWidth;
+        const newScreenHeight = window.innerHeight;
+
+        // 更新 div 的宽度和高度
+        dynamicDiv.style.width = newScreenWidth + 'px';
+        dynamicDiv.style.height = newScreenWidth + 'px';
+    });
+
+    new Color4Bg.AestheticFluidBg({
+        dom: "box",
+<!--        黑银色-->
+        colors: ["#000000","#5c5c5c","#c9c9c9","#ffffff","#ffffff","#010101"],
+<!--        深蓝灰色-->
+<!--        colors: ["#212832","#3F4659","#131a25","#3c4772","#212832","#3F4659"],-->
+        loop: true
+    })
+
+<!--    new Color4Bg.WavyWavesBg({-->
+<!--	dom: "box",-->
+<!--	colors: ["#e3e3e3","#b0b0b0","#4f4f4f","#1f1f1f","#000000","#000000"],-->
+<!--	loop: true-->
+<!--    })-->
+</script>
+</body>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+</html>
