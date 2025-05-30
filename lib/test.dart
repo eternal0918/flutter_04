@@ -111,7 +111,7 @@ class _ModeSheetTestState extends State<ModeSheetTest> {
         child: ElevatedButton(
           onPressed: () {
             final modalRoute = ModalSheetRoute(
-              builder: (context) => EternalModeSheet(),
+              builder: (context) => EternalModeSheet(content: FlutterLogo(),),
             );
             Navigator.push(context, modalRoute);
           },

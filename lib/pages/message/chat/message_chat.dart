@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_margin.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_04/entity/message/chat/chat_message_entity.dart';
 import 'package:flutter_04/pages/message/chat/message_chat_bottom_tool_bars.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key});
@@ -22,6 +24,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final GlobalKey<MessageChatBottomToolBarsState> _bottomToolsKey = GlobalKey<MessageChatBottomToolBarsState>();
   late AnimationController _listViewAnimationController;
+
 
   @override
   void initState() {
@@ -100,6 +103,8 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
     _scrollToBottom();
   }
 
+
+
 //消息列表滑动到底部
   void _scrollToBottom() {
     // 滑动到指定位置
@@ -164,30 +169,39 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
           IconButton(icon: const Icon(Icons.segment), splashRadius: 20, onPressed: () {}),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                // 触摸收起键盘
-                FocusScope.of(context).requestFocus(FocusNode());
-                _bottomToolsKey.currentState?.closeBottomTools();
-              },
-              child: AnimatedList(
-                key: _listKey,
-                physics: const BouncingScrollPhysics(),
-                controller: _scrollController,
-                initialItemCount: _messages.length,
-                itemBuilder: (context, index, animation) {
-                  return _messageItem(_messages[index], animation, index);
-                },
+          Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    // 触摸收起键盘
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _bottomToolsKey.currentState?.closeBottomTools();
+                  },
+                  child: AnimatedList(
+                    key: _listKey,
+                    physics: const BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    initialItemCount: _messages.length,
+                    itemBuilder: (context, index, animation) {
+                      return _messageItem(_messages[index], animation, index);
+                    },
+                  ),
+                ),
               ),
-            ),
+
+              ///底部消息工具栏
+              MessageChatBottomToolBars(
+                key: _bottomToolsKey,
+                handleSubmitted: _handleSubmitted,
+              ),
+            ],
           ),
 
-          ///底部消息工具栏
-          MessageChatBottomToolBars(key: _bottomToolsKey, handleSubmitted: _handleSubmitted)
+
         ],
       ),
     );
