@@ -4,7 +4,7 @@ import '../enmus/font_size_scale_enum.dart';
 
 class EternalFontSize {
   ///字体类型 默认
-  static const String sizeType = "normal";
+  static const String sizeType = "small";
 
   ///辅助文字 8.0
   static double mini({String type = sizeType, double size = 8.0}) {

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/main.dart';
 import 'package:pinput/pinput.dart';
 
@@ -36,8 +37,8 @@ class _LoginVerifyState extends State<LoginVerify> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: const TextStyle(
-        fontSize: 20,
+      textStyle: TextStyle(
+        fontSize: EternalFontSize.large(),
         color: Colors.white,
       ),
       decoration: BoxDecoration(
@@ -64,12 +65,12 @@ class _LoginVerifyState extends State<LoginVerify> {
                   decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.black26),
                   child: const Icon(Icons.screen_lock_portrait, size: 50),
                 ),
-                const Text("验证码", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, letterSpacing: 4)),
+                Text("验证码", style: TextStyle(fontSize: EternalFontSize.mainLarge(), fontWeight: FontWeight.bold, letterSpacing: 4)),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Text(
                     "我们已经将验证码发送到了你的${widget.selectTabIndex == 0 ? '手机' : '邮箱'}上请注意查收。",
-                    style: const TextStyle(color: EternalColors.textColor, letterSpacing: 2),
+                    style: TextStyle(color: EternalColors.textColor, letterSpacing: 2, fontSize: EternalFontSize.base()),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -121,10 +122,10 @@ class _LoginVerifyState extends State<LoginVerify> {
                   children: [
                     Text(
                       widget.selectTabIndex == 0 ? '+86 180 6943 6480' : 'eternal0918@163.com',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: EternalColors.titleColor,
                         letterSpacing: 2,
-                        fontSize: 18,
+                        fontSize: EternalFontSize.large(),
                         fontWeight: FontWeight.bold,
                         fontFamily: "HYZhengYuan",
                       ),
@@ -157,10 +158,10 @@ class _LoginVerifyState extends State<LoginVerify> {
                       style: btnStyle,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.ads_click, size: 20),
                           SizedBox(width: 12),
-                          Text('重新获取', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('重新获取', style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular())),
                         ],
                       ),
                     ),
@@ -173,10 +174,10 @@ class _LoginVerifyState extends State<LoginVerify> {
                       style: btnStyle,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.login, size: 20),
                           SizedBox(width: 12),
-                          Text('登录', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('登录', style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular())),
                         ],
                       ),
                     ),

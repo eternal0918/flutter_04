@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 
 import '../../../constants/eternal_padding.dart';
@@ -46,8 +47,8 @@ class _LoginRegisterState extends State<LoginRegister> {
                   children: [
                     Center(
                       child: Container(
-                        height: 120,
-                        width: 120,
+                        height: 100,
+                        width: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 3),
@@ -70,6 +71,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: TextField(
+                                  style: TextStyle(fontSize: EternalFontSize.base()),
                                   decoration: const InputDecoration(labelText: '昵称', border: InputBorder.none),
                                   keyboardType: TextInputType.text,
                                   onChanged: (value) {
@@ -94,6 +96,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: TextField(
+                                  style: TextStyle(fontSize: EternalFontSize.base()),
                                   decoration: const InputDecoration(labelText: '手机号码', border: InputBorder.none),
                                   keyboardType: TextInputType.phone,
                                   onChanged: (value) {
@@ -119,13 +122,14 @@ class _LoginRegisterState extends State<LoginRegister> {
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: TextField(
                                   obscureText: _passwordObscure,
+                                  style: TextStyle(fontSize: EternalFontSize.base()),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     labelText: '密码',
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         _passwordObscure ? Icons.visibility : Icons.visibility_off,
-                                        color: EternalColors.unSelectColor,
+                                        color: EternalColors.selectColor,
                                         size: EternalIconSize.defaultSize,
                                       ),
                                       onPressed: () {
@@ -160,13 +164,14 @@ class _LoginRegisterState extends State<LoginRegister> {
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: TextField(
                                   obscureText: _passwordObscure,
+                                  style: TextStyle(fontSize: EternalFontSize.base()),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     labelText: '确认密码',
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         _passwordObscure ? Icons.visibility : Icons.visibility_off,
-                                        color: EternalColors.unSelectColor,
+                                        color: EternalColors.selectColor,
                                         size: EternalIconSize.defaultSize,
                                       ),
                                       onPressed: () {
@@ -218,7 +223,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                           children: [
                             Icon(Icons.login, size: EternalIconSize.defaultSize),
                             const SizedBox(width: 12),
-                            const Text('注册', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('注册', style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular())),
                           ],
                         ),
                       ),

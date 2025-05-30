@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/pages/message/chat/message_chat.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../base/eternal_navigator_route.dart';
 import '../../constants/eternal_colors.dart';
@@ -59,7 +61,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
               child: ElevatedButton.icon(
                 onPressed: () {},
                 icon: Icon(Icons.motion_photos_off, color: EternalColors.textColor, size: EternalIconSize.miniSize),
-                label: const Text("清除未读", style: TextStyle(fontSize: 10, color: EternalColors.textColor)),
+                label: Text("清除未读", style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.textColor)),
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor: EternalColors.boxDefaultColor, // 设置按钮背景颜色
@@ -124,8 +126,8 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           child: ClipOval(
                             child: CachedNetworkImage(
                               imageUrl: EternalConstants.getImage(),
-                              height: 40,
-                              width: 40,
+                              height: 35,
+                              width: 35,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => const CircularProgressIndicator(),
                               errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -133,7 +135,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           ),
                         ),
                         SizedBox(height: EternalMargin.miniMargin),
-                        Text("Eternal", style: TextStyle(fontSize: 10))
+                        Text("Eternal", style: TextStyle(fontSize: EternalFontSize.small()))
                       ],
                     );
                   },
@@ -142,6 +144,15 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                   },
                   itemCount: 20,
                 ),
+              ),
+            ),
+          ),
+           SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            sliver: SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text("会话",style: TextStyle(fontSize: EternalFontSize.medium()),), Icon(Icons.more_horiz)],
               ),
             ),
           ),
@@ -162,20 +173,20 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                         },
                         child: Container(
                           height: 60,
-                          padding: EdgeInsets.only(left: EternalPadding.defaultPadding + EternalPadding.miniPadding),
+                          padding: EdgeInsets.only(left: EternalPadding.defaultPadding ),
                           child: Flex(
                             direction: Axis.horizontal, // 设置布局方向为垂直
                             children: [
-                              Container(
-                                width: 50,
+                              SizedBox(
+                                width: 35,
                                 child: Stack(
                                   children: [
                                     Positioned(
                                       child: ClipOval(
                                         child: CachedNetworkImage(
                                           imageUrl: EternalConstants.getImage(),
-                                          height: 40,
-                                          width: 40,
+                                          height: 30,
+                                          width: 30,
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => const CircularProgressIndicator(),
                                           errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -184,14 +195,14 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                     ),
                                     Positioned(
                                       bottom: 0,
-                                      right: 3,
+                                      right: 1,
                                       child: Container(
-                                        height: 18,
-                                        width: 18,
+                                        height: 12,
+                                        width: 12,
                                         decoration: BoxDecoration(
                                             color: Colors.green,
                                             borderRadius: BorderRadius.circular(50),
-                                            border: Border.all(color: EternalColors.boxDefaultColor, width: 3)),
+                                            border: Border.all(color: EternalColors.boxDefaultColor, width: 2)),
                                       ),
                                     )
                                   ],
@@ -214,13 +225,16 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.centerLeft,
-                                                  child: Text("Eternal ${index + 1}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  child: Text(
+                                                    "Eternal ${index + 1}",
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular()),
+                                                  ),
                                                 ),
-                                                const Align(
+                                                Align(
                                                     alignment: Alignment.centerLeft,
                                                     child: Text(
                                                       "A Material carousel widget that presents a scrollable list of items, each of which can dynamically change size based on the chosen layout.",
-                                                      style: TextStyle(color: EternalColors.secondTextColor, fontSize: 12),
+                                                      style: TextStyle(color: EternalColors.secondTextColor, fontSize: EternalFontSize.base()),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 1,
                                                     )),
@@ -232,7 +246,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                           children: [
                                             Text(
                                               EternalConstants.getCurrentTime(),
-                                              style: const TextStyle(fontSize: 12, color: EternalColors.secondTextColor),
+                                              style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.secondTextColor),
                                             ),
                                             const Icon(Icons.circle, size: 10, color: Colors.redAccent)
                                           ],

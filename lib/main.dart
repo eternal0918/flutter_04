@@ -15,7 +15,6 @@ import 'package:flutter_04/pages/release/publish/release_publish.dart';
 import 'package:flutter_04/test.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:motion/motion.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import 'constants/eternal_colors.dart';
 
@@ -80,7 +79,7 @@ class MyApp extends StatelessWidget {
           navigationBarTheme: _naviBarThemeData(),
         ),
         // home: HomeBottomNavigationBar(),
-        initialRoute: "/",
+        initialRoute: "/messageChat",
         routes: {
           '/': (context) => const HomeBottomNavigationBar(),
           "/homeDetails": (context) => const HomeDetails(),

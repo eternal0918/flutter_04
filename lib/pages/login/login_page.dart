@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/components/eternal_alert_dialog.dart';
 import 'package:flutter_04/components/eternal_segment_tab.dart';
+import 'package:flutter_04/constants/eternal_curve.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
 import 'package:flutter_04/main.dart';
 import 'package:flutter_04/pages/login/bg/login_bg.dart';
@@ -45,7 +47,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   late List<TextSpan> _textSpans;
 
   final String _text = '注册属于你的专属账号，开启梦幻绚丽创作之旅吧，让灵感在这里绽放，创意无限！';
-  final TextStyle _style = const TextStyle(fontSize: 13, color: Colors.transparent);
+  final TextStyle _style = TextStyle(fontSize: EternalFontSize.base(), color: Colors.transparent);
 
   @override
   void initState() {
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       _pageController.animateToPage(
         _currentPageIndex.value,
         duration: const Duration(milliseconds: 1000),
-        curve: const Cubic(0.00, 0.95, 0.35, 1.00),
+        curve: EternalCurve.materialCurve1,
       );
     });
 
@@ -127,14 +129,28 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(children: const [Text('登录', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, letterSpacing: 4))]),
-                              const SizedBox(height: 10),
+                              Row(children: [
+                                Text('登录',
+                                    style: TextStyle(
+                                      fontSize: EternalFontSize.extraLargePlus(),
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 4,
+                                    ))
+                              ]),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                children: const [
-                                  Text('Hello，欢迎访问', style: TextStyle(fontSize: 15, color: Colors.white70)),
+                                children: [
+                                  Text('Hello，欢迎访问', style: TextStyle(fontSize: EternalFontSize.regular(), color: Colors.white70)),
                                   SizedBox(width: 10),
-                                  Text('Sisyphus !', style: TextStyle(fontSize: 20, color: Colors.white, fontFamily: "Videopac", letterSpacing: 1)),
+                                  Text(
+                                    'Sisyphus !',
+                                    style: TextStyle(
+                                      fontSize: EternalFontSize.mainLarge(),
+                                      color: Colors.white,
+                                      fontFamily: "Videopac",
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -143,8 +159,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           //头像
                           if (_currentPageIndex.value != 2)
                             Container(
-                              height: 60,
-                              width: 60,
+                              height: 50,
+                              width: 50,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white, width: 3),
@@ -175,16 +191,16 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                 );
                               },
                             )),
-                      SizedBox(height: _currentPageIndex.value != 2 ? 80 : 30),
+                      SizedBox(height: _currentPageIndex.value != 2 ? 40 : 20),
                     ],
                   ),
                 ),
 
                 // const SizedBox(height: 50),
 
-                SizedBox(
+                Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 650,
+                  height: 600,
                   child: PageView(
                     controller: _pageController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -206,7 +222,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                               initialIndex: _selectedTabIndex,
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ClipRRect(
@@ -215,11 +231,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                 filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
                                 child: Container(
                                   color: Colors.black.withOpacity(0.2),
-                                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 25),
+                                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(_isPhoneSelected ? '手机号码' : '邮箱', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                      Text(
+                                        _isPhoneSelected ? '手机号码' : '邮箱',
+                                        style: TextStyle(fontSize: EternalFontSize.base(), fontWeight: FontWeight.w500),
+                                      ),
                                       const SizedBox(height: 15),
 
                                       // 电话号码输入框
@@ -236,6 +255,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                               child: Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                                 child: TextField(
+                                                  style: TextStyle(fontSize: EternalFontSize.base()),
                                                   controller: _textController,
                                                   decoration: InputDecoration(
                                                     hintText: _isPhoneSelected ? '18069436480' : 'xxxx@163.com',
@@ -252,7 +272,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                             ),
                                             // if (accountNumber.isNotEmpty)
                                             const Padding(
-                                                padding: EdgeInsets.only(right: 10), child: Icon(Icons.task_alt, color: Colors.lightBlue, size: 25)),
+                                              padding: EdgeInsets.only(right: 10),
+                                              child: Icon(Icons.task_alt, color: Colors.lightBlue, size: 20),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -268,10 +290,16 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         style: btnStyle,
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
+                                          children: [
                                             Icon(Icons.ads_click, size: 20),
                                             SizedBox(width: 12),
-                                            Text('获取验证码', style: TextStyle(fontWeight: FontWeight.bold)),
+                                            Text(
+                                              '获取验证码',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: EternalFontSize.regular(),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -284,7 +312,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           Expanded(child: Container(height: 1, color: Colors.grey.shade600)),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                                            child: Text('其他方式登录，如 QQ 或 微信', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                                            child: Text(
+                                              '其他方式登录，如 QQ 或 微信',
+                                              style: TextStyle(color: Colors.grey.shade500, fontSize: EternalFontSize.base()),
+                                            ),
                                           ),
                                           Expanded(child: Container(height: 1, color: Colors.grey.shade600)),
                                         ],
@@ -301,9 +332,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Image.asset('assets/images/icons/qq.png', width: 24, height: 24),
+                                            Image.asset('assets/images/icons/qq.png', width: 20, height: 20),
                                             const SizedBox(width: 12),
-                                            const Text('QQ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                                            Text('QQ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular())),
                                           ],
                                         ),
                                       ),
@@ -319,9 +350,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Image.asset('assets/images/icons/wechat.png', width: 24, height: 24),
+                                            Image.asset('assets/images/icons/wechat.png', width: 20, height: 20),
                                             const SizedBox(width: 12),
-                                            const Text('微信', style: TextStyle(fontWeight: FontWeight.bold)),
+                                            Text('微信', style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular())),
                                           ],
                                         ),
                                       ),
@@ -351,9 +382,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                             }),
                                           ),
                                           RichText(
-                                            text: const TextSpan(
-                                              style: TextStyle(color: Colors.white54, fontSize: 12),
-                                              children: [
+                                            text: TextSpan(
+                                              style: TextStyle(color: Colors.white54, fontSize: EternalFontSize.base()),
+                                              children: const [
                                                 TextSpan(text: '已阅读并同意  '),
                                                 TextSpan(text: '“用户协议”', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                                 TextSpan(text: '  和  '),
@@ -397,8 +428,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               RichText(
-                                text: const TextSpan(
-                                  style: TextStyle(color: Colors.white54, fontSize: 12),
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.white54, fontSize: EternalFontSize.base()),
                                   children: [
                                     TextSpan(text: '目前没有账号? '),
                                     TextSpan(text: '去注册', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

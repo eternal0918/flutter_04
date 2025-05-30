@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 
+import '../constants/eternal_font_size.dart';
+
 class EternalSegmentTab extends StatefulWidget {
   final List<String> tabs;
   final List<IconData> tabIcons;
@@ -170,6 +172,7 @@ class _EternalSegmentTabState extends State<EternalSegmentTab> with SingleTicker
                                       style: TextStyle(
                                         color: textColor,
                                         fontWeight: FontWeight.bold,
+                                        fontSize: EternalFontSize.base()
                                       ),
                                     )
                                   ],
