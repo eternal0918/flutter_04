@@ -1,24 +1,23 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_04/components/eternal_sheet_slip.dart';
 import 'package:flutter_04/constants/eternal_curve.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:photo_manager/photo_manager.dart';
 import '../../../constants/eternal_colors.dart';
 import '../../../constants/eternal_margin.dart';
 import '../../../constants/eternal_padding.dart';
-import '../../../entity/message/chat/message_photo_entity.dart';
 
 class MessageChatBottomToolBars extends StatefulWidget {
   final Function(String) handleSubmitted;
 
+  // final Function handleScrollToBottom;
+
   const MessageChatBottomToolBars({
     super.key,
     required this.handleSubmitted,
+    // required this.handleScrollToBottom,
   });
 
   @override
@@ -33,7 +32,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
   late DraggableScrollableController _sheetController;
 
   ///本地所有相册
-  late List<MessagePhotoEntity> _albums = [];
+  late File _selectedImage;
 
   // 当前键盘是否是激活状态
   bool _isKeyboardActived = false;
@@ -63,9 +62,10 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
 
     WidgetsBinding.instance.addObserver(this);
     _sheetController = DraggableScrollableController();
-
     _sheetController.addListener(() {
       // print("高度：${_sheetController.size}");
+
+      ///当高度占比为0.25时，直接关闭弹窗
       if (_sheetController.size == 0.25) {
         Navigator.pop(context);
       }
@@ -107,44 +107,22 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
         _bottomToolsHeight = 300;
         // 如果未旋转，旋转 45 度
         _iconController.forward();
-        _loadImages();
       } else {
         _bottomToolsHeight = 48;
         _iconController.reverse();
       }
+
+      ///调整消息列表，将其划到最底部
+      // widget.handleScrollToBottom();
       // 触摸收起键盘
       FocusScope.of(context).requestFocus(FocusNode());
     });
   }
 
-  ///获取本地图片方法
-  Future<void> _loadImages() async {
-    // 请求权限
-    final result = await PhotoManager.requestPermissionExtend();
-    if (result.isAuth) {
-      // 获取所有图片
-      final albums = await PhotoManager.getAssetPathList(type: RequestType.image);
-      print("获取数据：$albums");
-      if (albums.isNotEmpty) {
-        for (AssetPathEntity album in albums) {
-          print("图库：$album");
-          List<AssetEntity> images = await album.getAssetListRange(start: 0, end: 100);
-          if (images.isNotEmpty) {
-            MessagePhotoEntity photoEntity = MessagePhotoEntity(images: []);
-            photoEntity.images = images;
-            photoEntity.id = album.id;
-            photoEntity.albumName = album.name;
-            setState(() {
-              _albums.add(photoEntity);
-            });
-            print("图库照片：$images");
-          }
-        }
-      }
-    } else {
-      // 权限未开启
-      print('Permission not granted');
-    }
+  void _updateSelectedImage(File image) {
+    setState(() {
+      _selectedImage = image;
+    });
   }
 
   closeBottomTools() {
@@ -155,6 +133,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
     });
   }
 
+  ///发送消息
   void _onSubmit(String text) {
     if (text.isEmpty) return;
     _textController.clear();
@@ -190,8 +169,11 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (!_isBottomToolsVisible) ...[
+                    ///语音输入
                     IconButton(icon: const Icon(Icons.mic), splashRadius: 20, onPressed: () {}),
                     SizedBox(width: EternalMargin.miniMargin),
+
+                    ///输入框
                     Expanded(
                       child: InkWell(
                         splashColor: Colors.transparent,
@@ -220,16 +202,18 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                       ),
                     ),
                     SizedBox(width: EternalMargin.miniMargin),
+
+                    ///表情包
                     IconButton(icon: const Icon(Icons.sentiment_satisfied_alt), splashRadius: 20, onPressed: () {}),
                   ],
                   if (_isBottomToolsVisible)
                     TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "工具栏",
-                          style: TextStyle(fontSize: EternalFontSize.regular()),
-                        )),
+                      onPressed: () {},
+                      child: Text("工具栏", style: TextStyle(fontSize: EternalFontSize.regular())),
+                    ),
                   if (!_isSendButtonVisible)
+
+                    ///工具栏按钮
                     IconButton(
                       icon: AnimatedBuilder(
                         animation: _rotationAnimation,
@@ -246,6 +230,8 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                       },
                     ),
                   if (_isSendButtonVisible && !_isBottomToolsVisible)
+
+                    ///发送按钮
                     ElevatedButton(
                       onPressed: () {
                         if (_textController.text.isNotEmpty) {
@@ -253,8 +239,9 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          shape: const ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
-                          backgroundColor: Colors.deepPurple),
+                        shape: const ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
+                        backgroundColor: Colors.deepPurple,
+                      ),
                       child: Text("发送", style: TextStyle(fontSize: EternalFontSize.regular(), color: EternalColors.titleColor)),
                     ),
                 ],
@@ -267,94 +254,31 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                     padding: EdgeInsets.symmetric(vertical: EternalPadding.defaultPadding),
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 130, childAspectRatio: 1, mainAxisSpacing: 10),
                     children: [
+                      ///按钮容器
                       Column(
                         children: [
                           ElevatedButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 90),
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      color: Colors.transparent,
-                                      child: DraggableScrollableSheet(
-                                        controller: _sheetController,
-                                        initialChildSize: 0.5,
-                                        minChildSize: 0.2,
-                                        maxChildSize: 1,
-                                        snap: true,
-                                        snapSizes: const [0.5, 1],
-                                        builder: (BuildContext context, ScrollController scrollController) {
-                                          return Container(
-                                            padding: EdgeInsets.symmetric(horizontal: EternalPadding.smallPadding),
-                                            decoration: ShapeDecoration(
-                                              color: EternalColors.defaultColor,
-                                              shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                const EternalSheetSlip(),
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                    controller: scrollController,
-                                                    itemCount: _albums.length,
-                                                    itemBuilder: (BuildContext context, int index) {
-                                                      return Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          SizedBox(height: EternalMargin.miniMargin),
-                                                          ElevatedButton(
-                                                            onPressed: () {},
-                                                            child: Text(
-                                                              _albums[index].albumName,
-                                                              style: TextStyle(fontSize: EternalFontSize.regular()),
-                                                            ),
-                                                            style: ElevatedButton.styleFrom(
-                                                                shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20), // 圆角大小
-                                                            )),
-                                                          ),
-                                                          SizedBox(height: EternalMargin.miniMargin),
-                                                          Wrap(
-                                                            spacing: 2,
-                                                            runSpacing: 2,
-                                                            children: _albums[index].images!.map(
-                                                              (item) {
-                                                                return AssetEntityImage(
-                                                                  item,
-                                                                  width: double.parse((MediaQuery.of(context).size.width / 3 - 8).toStringAsFixed(2)),
-                                                                  height: double.parse(
-                                                                      ((MediaQuery.of(context).size.width / 3 - 8) * (4 / 3)).toStringAsFixed(2)),
-                                                                  isOriginal: false,
-                                                                  fit: BoxFit.cover,
-                                                                );
-                                                              },
-                                                            ).toList(),
-                                                            crossAxisAlignment: WrapCrossAlignment.center,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
+                            onPressed: () async {
+                              ///相册弹窗
+                              final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+                              if (pickedImage != null) {
+                                _updateSelectedImage(File(pickedImage.path));
+                                print("文件数据：$_selectedImage");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(_selectedImage.path,style: TextStyle(color: Colors.white),),
+                                    backgroundColor: EternalColors.defaultColor,
+                                    duration: Duration(days: 1), // 设置一个非常长的时间，使其不会自动消失
+                                    action: SnackBarAction(
+                                      label: '关闭',
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar(); // 关闭 SnackBar
+                                      },
                                     ),
-                                  );
-                                },
-                              ).then((value) {
-                                // print('Sheet is closed');
-                                // 在这里触发关闭逻辑
-                              });
+                                  ),
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -362,15 +286,14 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                                 backgroundColor: EternalColors.defaultColor,
                                 padding: const EdgeInsets.all(20),
                                 elevation: 0),
-                            child: Icon(LucideIcons.images, color: Colors.white),
+                            child: const Icon(LucideIcons.images, color: Colors.white),
                           ),
                           SizedBox(height: EternalMargin.smallMargin),
-                          Text(
-                            "相册",
-                            style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor),
-                          )
+                          Text("相册", style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor))
                         ],
                       ),
+
+                      ///按钮容器
                       Column(
                         children: [
                           ElevatedButton(
@@ -381,15 +304,14 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                                 backgroundColor: EternalColors.defaultColor,
                                 padding: const EdgeInsets.all(20),
                                 elevation: 0),
-                            child: Icon(Icons.camera_alt_rounded, color: Colors.white),
+                            child: const Icon(Icons.camera_alt_rounded, color: Colors.white),
                           ),
                           SizedBox(height: EternalMargin.smallMargin),
-                          Text(
-                            "拍照",
-                            style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor),
-                          )
+                          Text("拍照", style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor))
                         ],
                       ),
+
+                      ///按钮容器
                       Column(
                         children: [
                           ElevatedButton(
@@ -400,13 +322,10 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                                 backgroundColor: EternalColors.defaultColor,
                                 padding: const EdgeInsets.all(20),
                                 elevation: 0),
-                            child: Icon(Icons.snippet_folder_rounded, color: Colors.white),
+                            child: const Icon(Icons.snippet_folder_rounded, color: Colors.white),
                           ),
                           SizedBox(height: EternalMargin.smallMargin),
-                          Text(
-                            "文件",
-                            style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor),
-                          )
+                          Text("文件", style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.textColor))
                         ],
                       ),
                     ],

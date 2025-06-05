@@ -37,7 +37,9 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   flutter_displaymode: ^0.6.0   # 高刷
-  animated_toggle_switch: ^0.8.0
+  animated_toggle_switch: ^0.8.0  # tab切换
+  dio: ^5.8.0+1   #http网络请求
+  file_picker: 6.0.0 #文件选择
   #  scoped_model: ^2.0.0
   event_bus: ^2.0.0
   #  flutter_staggered_grid_view: ^0.6.2
@@ -59,10 +61,12 @@ dependencies:
   pinput: ^2.2.21 #验证码输入组件
   lucide_icons_flutter: ^3.0.3 #lucide 图标
   snapping_sheet: ^3.1.0 # 弹簧弹窗
-  wolt_modal_sheet: ^0.5.0 # 导航弹窗
-  smooth_sheets: 0.5.3
+  #  wolt_modal_sheet: ^0.5.0 # 导航弹窗
+  smooth_sheets: 0.5.3   #底部弹窗
   photo_manager: 2.5.2 #获取本地图片
-  #底部弹窗
+  image_picker: ^1.0.7 #打开系统相册
+
+
   #  flutter_animated_icons: ^1.0.1  #动态icon
   #  icon_forest: ^1.1.8   #icon
 

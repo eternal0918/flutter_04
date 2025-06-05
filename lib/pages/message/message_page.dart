@@ -147,12 +147,15 @@ class _MessageScrollViewState extends State<MessageScrollView> {
               ),
             ),
           ),
-           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: EternalIconSize.defaultSize),
             sliver: SliverToBoxAdapter(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("会话",style: TextStyle(fontSize: EternalFontSize.medium()),), Icon(Icons.more_horiz)],
+                children: [
+                  Text("会话", style: TextStyle(fontSize: EternalFontSize.medium())),
+                  const Icon(Icons.more_horiz),
+                ],
               ),
             ),
           ),
@@ -173,7 +176,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                         },
                         child: Container(
                           height: 60,
-                          padding: EdgeInsets.only(left: EternalPadding.defaultPadding ),
+                          padding: EdgeInsets.only(left: EternalPadding.defaultPadding),
                           child: Flex(
                             direction: Axis.horizontal, // 设置布局方向为垂直
                             children: [
