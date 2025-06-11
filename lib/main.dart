@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
           navigationBarTheme: _naviBarThemeData(),
         ),
         // home: HomeBottomNavigationBar(),
-        initialRoute: "/messageChat",
+        initialRoute: "/loginPage",
         routes: {
           '/': (context) => const HomeBottomNavigationBar(),
           "/homeDetails": (context) => const HomeDetails(),

@@ -14,6 +14,9 @@ class EternalMargin {
   /// 默认外边距 20
   static double defaultMargin = 20.0;
 
+  /// 大号外边距 30
+  static double mainLargeMargin = 30.0;
+
   /// 大号外边距 40
   static double largeMargin = 40.0;
 }

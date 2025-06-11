@@ -12,5 +12,8 @@ class EternalPadding {
   static double defaultPadding = 20.0;
 
   /// 大号内边距 40
+  static double mainLargePadding = 30.0;
+
+  /// 超大号内边距 40
   static double largePadding = 40.0;
 }

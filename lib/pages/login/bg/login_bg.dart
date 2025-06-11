@@ -54,7 +54,7 @@ class _LoginBgState extends State<LoginBg> with SingleTickerProviderStateMixin {
         Positioned(
           left: 0,
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height*0.5,
             width: MediaQuery.of(context).size.width,
             child: WebViewWidget(controller: _controller),
           ),
