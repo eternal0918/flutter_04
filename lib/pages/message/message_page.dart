@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
@@ -12,6 +13,7 @@ import '../../constants/eternal_colors.dart';
 import '../../constants/eternal_constants.dart';
 import '../../constants/eternal_margin.dart';
 import '../../constants/eternal_padding.dart';
+import '../../toasts/CustomAnimationWidget.dart';
 
 class MessagePage extends StatelessWidget {
   const MessagePage({Key? key}) : super(key: key);
@@ -54,7 +56,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
         title: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            const Text("消息"),
+            const Text("消息", style: TextStyle(color: EternalColors.titleColor)),
             const SizedBox(width: 10),
             SizedBox(
               height: 25,
@@ -78,7 +80,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            child: Icon(Icons.search_rounded, size: EternalIconSize.defaultSize),
+            child: Icon(Icons.search_rounded, size: EternalIconSize.defaultSize, color: EternalColors.titleColor),
           ),
           const SizedBox(width: 10),
         ],
@@ -135,7 +137,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           ),
                         ),
                         SizedBox(height: EternalMargin.miniMargin),
-                        Text("Eternal", style: TextStyle(fontSize: EternalFontSize.small()))
+                        Text("Eternal", style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.titleColor))
                       ],
                     );
                   },
@@ -167,7 +169,16 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                     return Dismissible(
                       key: Key(index.toString()),
                       onDismissed: (directory) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('已移除 Eternal ${index + 1} 会话.')));
+                        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('已移除 Eternal ${index + 1} 会话.')));
+                        BotToast.showText(
+                          contentPadding: EdgeInsets.all(EternalPadding.smallPadding),
+                          text: '已移除 Eternal ${index + 1} 会话.',
+                          textStyle: TextStyle(fontSize: EternalFontSize.regular(), color: EternalColors.titleColor),
+                          wrapToastAnimation: (controller, cancel, Widget child) => CustomAnimationWidget(
+                            controller: controller,
+                            child: child,
+                          ),
+                        );
                       },
                       background: Container(color: Colors.redAccent, child: const Icon(Icons.remove_circle_outline)),
                       child: InkWell(
@@ -230,7 +241,11 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                                   alignment: Alignment.centerLeft,
                                                   child: Text(
                                                     "Eternal ${index + 1}",
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.regular()),
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: EternalFontSize.regular(),
+                                                      color: EternalColors.titleColor,
+                                                    ),
                                                   ),
                                                 ),
                                                 Align(

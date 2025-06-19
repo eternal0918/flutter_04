@@ -63,28 +63,22 @@ class EternalColors {
 
   ///方案3
   static const Color defaultColor = Color.fromRGBO(28, 31, 36, 1);
-
-  // static const Color boxDefaultColor = Color.fromRGBO(43, 47, 56, 1.0);
   static const Color boxDefaultColor = Color.fromRGBO(39, 43, 51, 1.0);
   static const Color unSelectColor = Color.fromRGBO(73, 73, 73, 1);
   static const Color selectColor = Color.fromRGBO(135, 135, 135, 1.0);
   static const Color cancelColor = Color.fromRGBO(245, 245, 245, 1.0);
 
-  ///方案
-  // static const Color defaultColor = Color.fromRGBO(25, 27, 40, 1);
-  // static const Color boxDefaultColor = Color.fromRGBO(28, 30, 42, 1.0);
-  // static const Color unSelectColor = Color.fromRGBO(68, 70, 85, 1);
-  // static const Color selectColor = Color.fromRGBO(149, 151, 164, 1);
-
   static const Color titleColor = Color.fromRGBO(255, 255, 255, 1);
   static const Color textColor = Color.fromRGBO(171, 173, 186, 1);
   static const Color secondTextColor = Color.fromRGBO(149, 151, 164, 0.7);
 
-// static const Color defaultColor = Color.fromRGBO(244, 245, 249, 1);
-// static const Color boxDefaultColor = Color.fromRGBO(221, 223, 230, 1);
-// static const Color unSelectColor = Colors.grey;
-// static const Color selectColor = Color.fromRGBO(37, 44, 65, 1);
-// static const Color titleColor = Color.fromRGBO(37, 44, 65, 1);
-// static const Color textColor = Color.fromRGBO(37, 44, 65, 0.5);
-// static const Color secondTextColor = Color.fromRGBO(37, 44, 65, 1);
+  // static const Color defaultColor = Color.fromRGBO(244, 245, 249, 1);
+  // static const Color boxDefaultColor = Color.fromRGBO(221, 223, 230, 1);
+  // static const Color unSelectColor = Colors.grey;
+  // static const Color selectColor = Color.fromRGBO(37, 44, 65, 1);
+  // static const Color cancelColor = Color.fromRGBO(245, 245, 245, 1.0);
+  //
+  // static const Color titleColor = Color.fromRGBO(37, 44, 65, 1);
+  // static const Color textColor = Color.fromRGBO(37, 44, 65, 0.5);
+  // static const Color secondTextColor = Color.fromRGBO(37, 44, 65, 1);
 }

@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_04/pages/home/search/home_search.dart';
 import 'package:flutter_04/pages/home_bottom_navigation_bar.dart';
 import 'package:flutter_04/pages/login/login_page.dart';
 import 'package:flutter_04/pages/message/chat/message_chat.dart';
+import 'package:flutter_04/pages/message/message_page.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_attention.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_fans.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_score.dart';
@@ -26,8 +28,19 @@ double equipmentWidth = 0;
 ///手机高度
 double equipmentHeight = 0;
 
+///固定手机宽度等比例缩放
+// double scaleFactorCallback(Size deviceSize) {
+//   // screen width used in your UI design
+//   const double widthOfDesign = 420;
+//   return deviceSize.width / widthOfDesign;
+// }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // ScaledWidgetsFlutterBinding.ensureInitialized(
+  //   scaleFactor: scaleFactorCallback,
+  // );
+  runApp(MyApp());
 
   /// Initialize the plugin to determine gyroscope availability.
   await Motion.instance.initialize();
@@ -35,7 +48,6 @@ Future<void> main() async {
   /// Globally set Motion's update interval to 60 frames per second.
   Motion.instance.setUpdateInterval(60.fps);
 
-  runApp(MyApp());
   //设置Android头部的导航栏透明
   SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
     //导航栏背景色
@@ -69,10 +81,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "ETERNAL",
+        builder: BotToastInit(),
+        //1. call BotToastInit
+        navigatorObservers: [BotToastNavigatorObserver()],
+        //2. registered route observer
         theme: ThemeData(
           useMaterial3: false,
           colorScheme: const ColorScheme.dark().copyWith(
-            primary: Colors.white,
+            primary: EternalColors.titleColor,
             secondary: EternalColors.boxDefaultColor,
           ),
           // fontFamily: 'HYZhengYuan',
@@ -91,6 +107,7 @@ class MyApp extends StatelessWidget {
           "/releasePublish": (context) => const ReleasePublish(),
           "/releaseDetails": (context) => const ReleaseDetails(),
           "/loginPage": (context) => const LoginPage(),
+          "/message": (context) => const MessagePage(),
           "/messageChat": (context) => const MessageChat(),
           "/test": (context) => ImperativeModalSheetExample(),
           "/modeTest": (context) => ModeSheetTest(),

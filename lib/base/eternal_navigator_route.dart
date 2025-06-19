@@ -7,6 +7,10 @@ class EternalNavigatorRoute {
     Navigator.of(context).push(createRoute(Tween(begin: const Offset(0.0, 1.0), end: Offset.zero), page));
   }
 
+  static void pop(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   static void pushReplacement(BuildContext context, Widget page) {
     Navigator.pushReplacement(context, createRoute(Tween(begin: const Offset(0.0, 1.0), end: Offset.zero), page));
   }

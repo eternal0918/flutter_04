@@ -1,9 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_04/base/eternal_navigator_route.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
+import 'package:flutter_04/pages/login/login/login_register.dart';
+import 'package:lottie/lottie.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
+import '../../constants/eternal_curve.dart';
 import '../../constants/eternal_font_size.dart';
 import '../../constants/eternal_icon_size.dart';
 import '../../constants/eternal_margin.dart';
@@ -17,11 +22,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
-  FocusNode _actFocusNode = FocusNode();
-  FocusNode _pwdFocusNode = FocusNode();
+  final FocusNode _actFocusNode = FocusNode();
+  final FocusNode _pwdFocusNode = FocusNode();
+  final FocusNode _verifyFocusNode = FocusNode();
+  late PageController _pageController;
+  late final ValueNotifier<int> _currentPageIndex = ValueNotifier<int>(0); // 定义一个值监听器
 
   @override
   void initState() {
+    _pageController = PageController(
+      initialPage: 0,
+      keepPage: false,
+      viewportFraction: 1, //页面占比 0~1
+    );
+    _currentPageIndex.addListener(() {
+      _pageController.animateToPage(
+        _currentPageIndex.value,
+        duration: const Duration(milliseconds: 1000),
+        curve: EternalCurve.materialCurve1,
+      );
+    });
     super.initState();
   }
 
@@ -34,7 +54,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: EternalColors.defaultColor,
+      backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false, //输入法不会顶起页面
       body: Stack(
         children: [
@@ -110,6 +130,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             ),
                           ),
                         ),
+                        SizedBox(width: EternalMargin.normalMargin),
                         OutlinedButton(
                           onPressed: () {
                             // 微信 登录逻辑
@@ -124,6 +145,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         OutlinedButton(
                           onPressed: () {
                             // 手机 登录逻辑
+                            setState(() {
+                              _currentPageIndex.value = _currentPageIndex.value == 1 ? 0 : 1;
+                            });
                           },
                           style: OutlinedButton.styleFrom(
                             shape: const CircleBorder(),
@@ -161,6 +185,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       ),
                     ),
                     SizedBox(height: EternalMargin.smallMargin),
+                    Text("${MediaQuery.of(context).size.width}"),
 
                     ///登录
                     Stack(
@@ -178,7 +203,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           child: Container(
                             padding: const EdgeInsets.all(0.5),
                             decoration: ShapeDecoration(
-                              color: Colors.white12,
+                              // color: Colors.white12,
+                              gradient: const LinearGradient(
+                                // 渐变方向，从左到右
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.white12,
+                                  Colors.transparent,
+                                  Colors.transparent,
+                                ],
+                              ),
                               shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
                             ),
                             child: Container(
@@ -189,8 +224,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                 0,
                               ),
                               decoration: ShapeDecoration(
-                                color: const Color.fromRGBO(19, 19, 19, 1.0),
+                                // color: const Color.fromRGBO(19, 19, 19, 1.0),
                                 // color: Colors.yellow,
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color.fromRGBO(19, 19, 19, 1.0),
+                                    Colors.black,
+                                    Colors.black,
+                                  ],
+                                ),
                                 shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
                               ),
                               child: Column(
@@ -215,13 +259,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                   ///账号
                                   TextField(
                                     focusNode: _actFocusNode,
-                                    style: TextStyle(fontSize: EternalFontSize.base(), letterSpacing: 2),
+                                    style: TextStyle(fontSize: EternalFontSize.regular(), letterSpacing: 2),
                                     decoration: InputDecoration(
                                       label: Wrap(
                                         crossAxisAlignment: WrapCrossAlignment.center,
                                         spacing: EternalMargin.miniMargin,
-                                        children: [
-                                          if (_actFocusNode.hasFocus) Icon(Icons.person, size: EternalIconSize.smallSize),
+                                        children: const [
+                                          // if (_actFocusNode.hasFocus) Icon(Icons.person, size: EternalIconSize.smallSize),
                                           Text("手机号/电子邮箱/账号"),
                                         ],
                                       ),
@@ -235,37 +279,113 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         borderSide: BorderSide(color: Colors.white12),
                                       ),
                                     ),
-                                    keyboardType: TextInputType.phone,
+                                    keyboardType: TextInputType.text,
                                     onChanged: (value) {},
                                   ),
-                                  SizedBox(height: EternalMargin.defaultMargin),
 
-                                  ///密码
-                                  TextField(
-                                    focusNode: _pwdFocusNode,
-                                    style: TextStyle(fontSize: EternalFontSize.regular(), letterSpacing: 4),
-                                    decoration: InputDecoration(
-                                      label: Wrap(
-                                        crossAxisAlignment: WrapCrossAlignment.center,
-                                        spacing: EternalMargin.miniMargin,
-                                        children: [
-                                          if (_pwdFocusNode.hasFocus) Icon(Icons.password_rounded, size: EternalIconSize.smallSize),
-                                          const Text("密码"),
-                                        ],
-                                      ),
-                                      floatingLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                                      floatingLabelAlignment: FloatingLabelAlignment.start,
-                                      filled: true,
-                                      fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
-                                      contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-                                      border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(color: Colors.white12),
-                                      ),
+                                  // SizedBox(height: EternalMargin.defaultMargin),
+
+                                  SizedBox(
+                                    height: 70,
+                                    child: PageView(
+                                      controller: _pageController,
+                                      scrollDirection: Axis.vertical,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      children: [
+                                        ///密码
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(0, EternalPadding.defaultPadding, 0, 0),
+                                          child: TextField(
+                                            focusNode: _pwdFocusNode,
+                                            style: TextStyle(fontSize: EternalFontSize.regular(), letterSpacing: 4),
+                                            decoration: InputDecoration(
+                                              label: Wrap(
+                                                crossAxisAlignment: WrapCrossAlignment.center,
+                                                spacing: EternalMargin.miniMargin,
+                                                children: const [
+                                                  // if (_pwdFocusNode.hasFocus) Icon(Icons.password_rounded, size: EternalIconSize.smallSize),
+                                                  Text("密码"),
+                                                ],
+                                              ),
+                                              floatingLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                              floatingLabelAlignment: FloatingLabelAlignment.start,
+                                              filled: true,
+                                              fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
+                                              contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                                              border: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                                                borderSide: BorderSide(color: Colors.white12),
+                                              ),
+                                            ),
+                                            keyboardType: TextInputType.visiblePassword,
+                                            onChanged: (value) {},
+                                          ),
+                                        ),
+
+                                        ///验证码
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(0, EternalPadding.defaultPadding, 0, 0),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: TextField(
+                                                    focusNode: _verifyFocusNode,
+                                                    style: TextStyle(fontSize: EternalFontSize.regular(), letterSpacing: 4),
+                                                    decoration: InputDecoration(
+                                                      label: Wrap(
+                                                        crossAxisAlignment: WrapCrossAlignment.center,
+                                                        spacing: EternalMargin.miniMargin,
+                                                        children: const [
+                                                          // if (_verifyFocusNode.hasFocus)
+                                                          //   Icon(Icons.verified_user_outlined, size: EternalIconSize.smallSize),
+                                                          Text("验证码"),
+                                                        ],
+                                                      ),
+                                                      floatingLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                                      floatingLabelAlignment: FloatingLabelAlignment.start,
+                                                      filled: true,
+                                                      fillColor: const Color.fromRGBO(255, 255, 255, 0.05),
+                                                      contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                                                      border: const OutlineInputBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                                                        borderSide: BorderSide(color: Colors.white12),
+                                                      ),
+                                                    ),
+                                                    keyboardType: TextInputType.number,
+                                                    onChanged: (value) {},
+                                                  )),
+                                              SizedBox(
+                                                width: EternalMargin.smallMargin,
+                                              ),
+
+                                              ///获取验证码按钮
+                                              OutlinedButton(
+                                                onPressed: () {
+                                                  // QQ 登录逻辑
+                                                },
+                                                style: OutlinedButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size(100, 50),
+                                                  backgroundColor: const Color.fromRGBO(19, 19, 19, 1.0),
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+                                                  side: const BorderSide(color: Colors.transparent),
+                                                ),
+                                                child: Text(
+                                                  "获取",
+                                                  style: TextStyle(
+                                                    fontSize: EternalFontSize.regular(),
+                                                    letterSpacing: 2,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    keyboardType: TextInputType.visiblePassword,
-                                    onChanged: (value) {},
                                   ),
+
                                   SizedBox(height: EternalMargin.miniMargin),
 
                                   ///用户协议
@@ -316,14 +436,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     style: OutlinedButton.styleFrom(
                                       minimumSize: Size(double.infinity, 50),
                                       padding: EdgeInsets.zero,
-                                      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.05),
+                                      backgroundColor: const Color.fromRGBO(19, 19, 19, 1.0),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
                                       side: const BorderSide(color: Colors.transparent),
                                     ),
                                     child: Text(
                                       "登录",
                                       style: TextStyle(
-                                        fontSize: EternalFontSize.regular(),
+                                        fontSize: EternalFontSize.medium(),
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 2,
                                       ),
@@ -334,20 +454,35 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             ),
                           ),
                         ),
+                        // Positioned(
+                        //   right: 60,
+                        //   top: 10,
+                        //   child: Transform.rotate(
+                        //     angle: 90 * (3.141592653589793 / 180),
+                        //     child: Container(
+                        //       child: Lottie.asset('assets/lottie/congratulation_bottom_center.json', width: 50, height: 120, fit: BoxFit.fill),
+                        //     ),
+                        //   ),
+                        // ),
                         Positioned(
-                          right: EternalMargin.smallMargin,
-                          top: 0,
-                          child: Image.asset('assets/images/banner/login.png', width: 100, height: 100),
-                        ),
+                            right: EternalMargin.smallMargin,
+                            top: 0,
+                            child: SimpleShadow(
+                              opacity: 1,
+                              color: Colors.black,
+                              offset: Offset(0, 8),
+                              sigma: 10,
+                              child: Image.asset('assets/images/banner/login.png', width: 100, height: 100), // Default: 2
+                            )),
                         Positioned(
-                          right: 65,
-                          top: 105,
+                          right: 68,
+                          top: 103,
                           child: ClipPath(
                             clipper: InverseTrapezoidClipper(),
                             child: Container(
                               width: 40,
-                              height: 2,
-                              margin: EdgeInsets.symmetric(horizontal: 2),
+                              height: 1,
+                              margin: EdgeInsets.symmetric(horizontal: 0.5),
                               decoration: BoxDecoration(
                                 color: Colors.white70,
                                 borderRadius: BorderRadius.circular(20),
@@ -508,7 +643,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                     ),
                   ),
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      EternalNavigatorRoute.push(context, LoginRegister());
+                    },
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                       side: BorderSide.none,
