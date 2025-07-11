@@ -4,7 +4,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../main.dart';
 
 class LoginBg extends StatefulWidget {
-  const LoginBg({super.key});
+  double heightRate;
+  double widthRate;
+
+  LoginBg({
+    super.key,
+    this.heightRate = 1,
+    this.widthRate = 1,
+  });
 
   @override
   State<LoginBg> createState() => _LoginBgState();
@@ -54,8 +61,8 @@ class _LoginBgState extends State<LoginBg> with SingleTickerProviderStateMixin {
         Positioned(
           left: 0,
           child: SizedBox(
-            height: MediaQuery.of(context).size.height*0.5,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * widget.heightRate,
+            width: MediaQuery.of(context).size.width * widget.widthRate,
             child: WebViewWidget(controller: _controller),
           ),
         ), // 如果页面还在加载中，显示加载指示器
