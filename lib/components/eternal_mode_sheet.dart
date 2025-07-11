@@ -52,7 +52,7 @@ class _EternalModeSheetState extends State<EternalModeSheet> {
                   shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
                 ),
                 child: Column(children: [
-                  const EternalSheetSlip(),
+                  EternalSheetSlip(),
                   SizedBox(child: widget.content),
                 ]),
               ),

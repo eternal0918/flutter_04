@@ -83,7 +83,7 @@ class _PersonCollectState extends State<PersonCollect> {
                                 clipBehavior: Clip.hardEdge,
                                 child: Column(
                                   children: [
-                                    const EternalSheetSlip(),
+                                    EternalSheetSlip(),
                                     SizedBox(
                                       width: double.infinity,
                                       child: ElevatedButton(

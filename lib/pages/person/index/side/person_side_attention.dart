@@ -155,8 +155,7 @@ class _PersonSideAttentionState extends State<PersonSideAttention> {
                         onPressed: () {
                           showModalBottomSheet(
                             backgroundColor: EternalColors.defaultColor,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
                             context: context,
                             builder: (context) => StatefulBuilder(
                               builder: (context, setState) {
@@ -200,7 +199,7 @@ class _SideAttentionSheetState extends State<SideAttentionSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const EternalSheetSlip(),
+          EternalSheetSlip(),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(

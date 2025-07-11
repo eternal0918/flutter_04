@@ -2,11 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_04/base/eternal_navigator_route.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_margin.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
+import 'package:flutter_04/constants/eternal_route_direct.dart';
 import 'package:flutter_04/entity/message/chat/chat_message_entity.dart';
 import 'package:flutter_04/pages/message/chat/message_chat_bottom_tool_bars.dart';
+import 'package:flutter_04/pages/message/more/message_more_left.dart';
+import 'package:flutter_04/pages/message/more/message_more_right.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
@@ -24,7 +28,6 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final GlobalKey<MessageChatBottomToolBarsState> _bottomToolsKey = GlobalKey<MessageChatBottomToolBarsState>();
   late AnimationController _listViewAnimationController;
-
 
   @override
   void initState() {
@@ -103,8 +106,6 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
     _scrollToBottom();
   }
 
-
-
 //消息列表滑动到底部
   void _scrollToBottom() {
     // 滑动到指定位置
@@ -145,28 +146,46 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
         elevation: 0,
         backgroundColor: EternalColors.defaultColor,
         leading: IconButton(icon: const Icon(Icons.arrow_back), splashRadius: 20, onPressed: () => Navigator.of(context).pop()),
-        title: Row(
-          children: [
-            const CircleAvatar(backgroundImage: NetworkImage('https://picsum.photos/512/512'), radius: 20),
-            SizedBox(width: EternalMargin.smallMargin),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('John Doe', style: TextStyle(fontSize: EternalFontSize.medium())),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ClipRRect(borderRadius: BorderRadius.circular(50), child: Container(width: 10, height: 10, color: Colors.green)),
-                    SizedBox(width: EternalMargin.miniMargin),
-                    Text('在线', style: TextStyle(fontSize: EternalFontSize.base()))
-                  ],
-                )
-              ],
-            ),
-          ],
+        title: GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) {
+                return MessageMoreLeft();
+              },
+            );
+          },
+          child: Row(
+            children: [
+              const CircleAvatar(backgroundImage: NetworkImage('https://picsum.photos/512/512'), radius: 20),
+              SizedBox(width: EternalMargin.smallMargin),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('John Doe', style: TextStyle(fontSize: EternalFontSize.medium())),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(borderRadius: BorderRadius.circular(50), child: Container(width: 10, height: 10, color: Colors.green)),
+                      SizedBox(width: EternalMargin.miniMargin),
+                      Text('在线', style: TextStyle(fontSize: EternalFontSize.base()))
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.segment), splashRadius: 20, onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.segment),
+            splashRadius: 20,
+            onPressed: () {
+              EternalNavigatorRoute.pushByDirect(context: context, page: MessageMoreRight(), direct: EternalRouteDirect.rightToLeft);
+            },
+          ),
         ],
       ),
       body: Stack(
@@ -200,8 +219,6 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
               ),
             ],
           ),
-
-
         ],
       ),
     );

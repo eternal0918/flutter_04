@@ -102,7 +102,7 @@ class _HomeFireFilterState extends State<HomeFireFilter> with TickerProviderStat
                 child: AppBar(
                   elevation: 0,
                   backgroundColor: EternalColors.defaultColor,
-                  title: const EternalSheetSlip(),
+                  title: EternalSheetSlip(),
                   leading: const Text(""),
                   centerTitle: true,
                   bottom: const TabBar(
@@ -138,8 +138,7 @@ class _HomeFireFilterState extends State<HomeFireFilter> with TickerProviderStat
                                     height: 30,
                                     child: ElevatedButton(
                                       onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: _modelSelectedItem.bgColor, shape: StadiumBorder()),
+                                      style: ElevatedButton.styleFrom(backgroundColor: _modelSelectedItem.bgColor, shape: StadiumBorder()),
                                       child: Text("${_modelSelectedItem.name}", style: TextStyle(color: Colors.white)),
                                     ))
                               ],
@@ -160,8 +159,7 @@ class _HomeFireFilterState extends State<HomeFireFilter> with TickerProviderStat
                                                 height: 30,
                                                 width: 120,
                                                 child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                      backgroundColor: themeItem.bgColor, shape: StadiumBorder()),
+                                                  style: ElevatedButton.styleFrom(backgroundColor: themeItem.bgColor, shape: StadiumBorder()),
                                                   child: Row(
                                                     crossAxisAlignment: CrossAxisAlignment.end,
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,8 +179,7 @@ class _HomeFireFilterState extends State<HomeFireFilter> with TickerProviderStat
                                                           return StatefulBuilder(builder: (context, state) {
                                                             return SimpleDialog(
                                                               backgroundColor: EternalColors.defaultColor,
-                                                              shape: ContinuousRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(50)),
+                                                              shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
                                                               children: [
                                                                 Slider(
                                                                   value: weightValue,

@@ -59,8 +59,6 @@ Future<void> main() async {
 
   //初次加载时，会获取不到设备的宽高
   Future.delayed(const Duration(milliseconds: 200), () {
-    // equipmentWidth = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
-    // equipmentHeight = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.height;
     equipmentWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
     equipmentHeight = MediaQueryData.fromView(WidgetsBinding.instance.window).size.height;
   });
@@ -95,7 +93,7 @@ class MyApp extends StatelessWidget {
           navigationBarTheme: _naviBarThemeData(),
         ),
         // home: HomeBottomNavigationBar(),
-        initialRoute: "/loginPage",
+        initialRoute: "/messageChat",
         routes: {
           '/': (context) => const HomeBottomNavigationBar(),
           "/homeDetails": (context) => const HomeDetails(),
@@ -107,9 +105,10 @@ class MyApp extends StatelessWidget {
           "/releasePublish": (context) => const ReleasePublish(),
           "/releaseDetails": (context) => const ReleaseDetails(),
           "/loginPage": (context) => const LoginPage(),
+          // "/registerPage": (context) => LoginRegister(),
           "/message": (context) => const MessagePage(),
           "/messageChat": (context) => const MessageChat(),
-          "/test": (context) => ImperativeModalSheetExample(),
+          "/test": (context) => const ImperativeModalSheetExample(),
           "/modeTest": (context) => ModeSheetTest(),
         },
       ),

@@ -114,7 +114,7 @@ class _PersonSideFansState extends State<PersonSideFans> {
                   onTap: () {
                     EternalNavigatorRoute.push(context, HomeDetailsTwo());
                   },
-                  leading:  ClipOval(
+                  leading: ClipOval(
                     child: CachedNetworkImage(
                       imageUrl: EternalConstants.getImage(),
                       height: 60,
@@ -138,17 +138,13 @@ class _PersonSideFansState extends State<PersonSideFans> {
                         child: Random().nextInt(100) % 2 == 0
                             ? ElevatedButton(
                                 onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: EternalColors.boxDefaultColor, elevation: 0),
-                                child:
-                                    const Text("互相关注", style: TextStyle(fontSize: 13, color: EternalColors.titleColor)),
+                                style: ElevatedButton.styleFrom(backgroundColor: EternalColors.boxDefaultColor, elevation: 0),
+                                child: const Text("互相关注", style: TextStyle(fontSize: 13, color: EternalColors.titleColor)),
                               )
                             : ElevatedButton(
                                 onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: EternalColors.getDangerColor(), elevation: 0),
-                                child:
-                                    const Text("回关", style: TextStyle(fontSize: 13, color: EternalColors.titleColor)),
+                                style: ElevatedButton.styleFrom(backgroundColor: EternalColors.getDangerColor(), elevation: 0),
+                                child: const Text("回关", style: TextStyle(fontSize: 13, color: EternalColors.titleColor)),
                               ),
                       ),
                       IconButton(
@@ -157,8 +153,7 @@ class _PersonSideFansState extends State<PersonSideFans> {
                         onPressed: () {
                           showModalBottomSheet(
                             backgroundColor: EternalColors.defaultColor,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
                             context: context,
                             builder: (context) => StatefulBuilder(
                               builder: (context, setState) {
@@ -202,9 +197,8 @@ class _SideFansSheetState extends State<SideFansSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const EternalSheetSlip(),
+          EternalSheetSlip(),
           ListTile(
-
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(
               backgroundImage: NetworkImage(EternalConstants.randomImageUrl),

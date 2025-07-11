@@ -92,7 +92,7 @@ class _ReleasePageState extends State<ReleasePage> with TickerProviderStateMixin
                                     clipBehavior: Clip.hardEdge,
                                     child: Column(
                                       children: [
-                                        const EternalSheetSlip(),
+                                         EternalSheetSlip(),
                                         SizedBox(
                                           width: double.infinity,
                                           child: ElevatedButton(

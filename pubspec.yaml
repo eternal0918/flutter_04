@@ -123,6 +123,7 @@ flutter:
     - assets/images/icons/
     - assets/images/logo/
     - assets/images/banner/
+    - assets/images/level/
     - assets/html/
     - assets/lottie/
   # To add assets to your application, add an assets section, like this:

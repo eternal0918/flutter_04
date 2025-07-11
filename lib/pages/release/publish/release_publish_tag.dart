@@ -115,7 +115,7 @@ class _ReleasePublishTagState extends State<ReleasePublishTag> {
                           body: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const EternalSheetSlip(),
+                              EternalSheetSlip(),
                               ListTile(
                                 title: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,

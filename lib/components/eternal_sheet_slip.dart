@@ -4,17 +4,19 @@ import '../constants/eternal_colors.dart';
 
 ///滑条
 class EternalSheetSlip extends StatelessWidget {
-  const EternalSheetSlip({super.key});
+  Color bgColor;
+
+  EternalSheetSlip({super.key, this.bgColor = EternalColors.unSelectColor});
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: 50,
       height: 5,
       margin: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: EternalColors.unSelectColor,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
     );
   }
