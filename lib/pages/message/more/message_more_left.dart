@@ -9,6 +9,7 @@ import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
 import 'package:flutter_04/pages/home/details/home_details.dart';
 import 'package:flutter_04/pages/home/details/two/home_details_two.dart';
+import 'package:flutter_04/pages/message/more/message_more_setting.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 
@@ -59,11 +60,18 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                           // EternalSheetSlip(bgColor: EternalColors.sheetWhiteSlip),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: IconButton(
-                                onPressed: () {
-                                  EternalNavigatorRoute.pop(context);
-                                },
-                                icon: const Icon(Icons.cancel, color: EternalColors.sheetWhiteSlip)),
+                            child: Wrap(
+                              children: [
+                                IconButton(
+                                  onPressed: () => EternalNavigatorRoute.push(context, MessageMoreSetting()),
+                                  icon: Icon(LucideIcons.settings, color: EternalColors.sheetWhiteSlip, size: EternalIconSize.defaultSize),
+                                ),
+                                IconButton(
+                                  onPressed: () => EternalNavigatorRoute.pop(context),
+                                  icon: const Icon(Icons.cancel, color: EternalColors.sheetWhiteSlip),
+                                )
+                              ],
+                            ),
                           ),
                           Expanded(
                             child: Padding(

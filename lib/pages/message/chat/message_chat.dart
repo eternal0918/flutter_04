@@ -152,9 +152,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               context: context,
-              builder: (context) {
-                return MessageMoreLeft();
-              },
+              builder: (context) => MessageMoreLeft(),
             );
           },
           child: Row(
@@ -264,7 +262,17 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                 children: [
                   ///好友头像
                   if (!message.isMe) ...[
-                    CircleAvatar(backgroundImage: NetworkImage(message.avatar), radius: 16),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => MessageMoreLeft(),
+                        );
+                      },
+                      child: CircleAvatar(backgroundImage: NetworkImage(message.avatar), radius: 16),
+                    ),
                     const SizedBox(width: 10),
                   ],
 
