@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_curve.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
+import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../constants/eternal_colors.dart';
@@ -40,6 +42,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
   // 用于判断是否显示发送按钮
   bool _isSendButtonVisible = false;
   bool _isBottomToolsVisible = false;
+  bool _isEmojisVisible = false;
   double _bottomToolsHeight = 48;
 
   @override
@@ -74,9 +77,16 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
   }
 
   _onFocus() {
-    if (!_focusNode.hasFocus && !_isBottomToolsVisible) {
+    if (!_focusNode.hasFocus && !_isBottomToolsVisible && !_isEmojisVisible) {
       // 失去焦点时候的操作
       _bottomToolsHeight = 48;
+    }
+    //表情栏 打开，焦点激活 时，关闭表情栏。
+    if (_isEmojisVisible && _focusNode.hasFocus) {
+      setState(() {
+        _isEmojisVisible = false;
+        _bottomToolsHeight = 350;
+      });
     }
   }
 
@@ -84,9 +94,21 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
   void didChangeMetrics() {
     super.didChangeMetrics();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // print("高度:$_bottomToolsHeight");
+
       if (_focusNode.hasFocus) {
-        _bottomToolsHeight = 48 + MediaQuery.of(context).viewInsets.bottom;
+        if (MediaQuery.of(context).viewInsets.bottom < 250) {
+          if (!_isEmojisVisible) {
+            _bottomToolsHeight = 300;
+          }
+        } else {
+          _bottomToolsHeight = 48 + MediaQuery.of(context).viewInsets.bottom;
+        }
+        if (_isKeyboardActived == false) {
+          _bottomToolsHeight = 48;
+        }
       }
+
       setState(() {
         if (MediaQuery.of(context).viewInsets.bottom == 0) {
           /// 键盘收回
@@ -99,9 +121,25 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
     });
   }
 
+  /// emoji 弹窗
+  void _openEmojiTools() {
+    setState(() {
+      _isBottomToolsVisible = false;
+      _isEmojisVisible = !_isEmojisVisible;
+      if (_isEmojisVisible) {
+        _bottomToolsHeight = 400;
+      } else {
+        _bottomToolsHeight = 48;
+      }
+      // 触摸收起键盘
+      FocusScope.of(context).requestFocus(FocusNode());
+    });
+  }
+
   ///工具栏 icon 动效
   void _openBottomTools() {
     setState(() {
+      _isEmojisVisible = false;
       _isBottomToolsVisible = !_isBottomToolsVisible;
       if (_isBottomToolsVisible) {
         _bottomToolsHeight = 300;
@@ -127,6 +165,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
 
   closeBottomTools() {
     setState(() {
+      _isEmojisVisible = false;
       _isBottomToolsVisible = false;
       _bottomToolsHeight = 48;
       _iconController.reverse();
@@ -138,6 +177,8 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
     if (text.isEmpty) return;
     _textController.clear();
     widget.handleSubmitted(text);
+    // _isEmojisVisible = false;
+    // _bottomToolsHeight = 48;
   }
 
   @override
@@ -147,6 +188,12 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
     _iconController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  _onBackspacePressed() {
+    _textController
+      ..text = _textController.text.characters.toString()
+      ..selection = TextSelection.fromPosition(TextPosition(offset: _textController.text.length));
   }
 
   @override
@@ -204,13 +251,13 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                     SizedBox(width: EternalMargin.miniMargin),
 
                     ///表情包
-                    IconButton(icon: const Icon(Icons.sentiment_satisfied_alt), splashRadius: 20, onPressed: () {}),
-                  ],
-                  if (_isBottomToolsVisible)
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("工具栏", style: TextStyle(fontSize: EternalFontSize.regular())),
+                    IconButton(
+                      icon: Icon(_isEmojisVisible ? LucideIcons.keyboard : Icons.sentiment_satisfied_alt),
+                      splashRadius: 20,
+                      onPressed: () => _openEmojiTools(),
                     ),
+                  ],
+                  if (_isBottomToolsVisible) TextButton(onPressed: () {}, child: Text("工具栏", style: TextStyle(fontSize: EternalFontSize.regular()))),
                   if (!_isSendButtonVisible)
 
                     ///工具栏按钮
@@ -225,9 +272,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                         },
                       ),
                       splashRadius: 20,
-                      onPressed: () {
-                        _openBottomTools();
-                      },
+                      onPressed: () => _openBottomTools(),
                     ),
                   if (_isSendButtonVisible && !_isBottomToolsVisible)
 
@@ -248,6 +293,43 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
               ),
 
               ///工具栏
+              if (_isEmojisVisible)
+                Expanded(
+                  child: EmojiPicker(
+                    textEditingController: _textController,
+                    onBackspacePressed: _onBackspacePressed,
+                    config: const Config(
+                      columns: 8,
+                      verticalSpacing: 0,
+                      horizontalSpacing: 0,
+                      gridPadding: EdgeInsets.zero,
+                      initCategory: Category.RECENT,
+                      bgColor: Colors.transparent,
+                      indicatorColor: Colors.blue,
+                      iconColor: Colors.grey,
+                      iconColorSelected: Colors.blue,
+                      backspaceColor: Colors.blue,
+                      skinToneDialogBgColor: Colors.white,
+                      skinToneIndicatorColor: Colors.grey,
+                      enableSkinTones: true,
+                      recentTabBehavior: RecentTabBehavior.RECENT,
+                      recentsLimit: 28,
+                      replaceEmojiOnLimitExceed: false,
+                      noRecents: Text(
+                        '选个表情试试吧，☺',
+                        style: TextStyle(fontSize: 20, color: Colors.black26),
+                        textAlign: TextAlign.center,
+                      ),
+                      loadingIndicator: SizedBox.shrink(),
+                      tabIndicatorAnimDuration: kTabScrollDuration,
+                      categoryIcons: CategoryIcons(),
+                      buttonMode: ButtonMode.MATERIAL,
+                      checkPlatformCompatibility: true,
+                    ),
+                  ),
+                ),
+
+              ///工具栏
               if (_isBottomToolsVisible)
                 Expanded(
                   child: GridView(
@@ -266,7 +348,10 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                                 print("文件数据：$_selectedImage");
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(_selectedImage.path,style: TextStyle(color: Colors.white),),
+                                    content: Text(
+                                      _selectedImage.path,
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
                                     backgroundColor: EternalColors.defaultColor,
                                     duration: Duration(days: 1), // 设置一个非常长的时间，使其不会自动消失
                                     action: SnackBarAction(

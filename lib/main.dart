@@ -9,6 +9,7 @@ import 'package:flutter_04/pages/home_bottom_navigation_bar.dart';
 import 'package:flutter_04/pages/login/login_page.dart';
 import 'package:flutter_04/pages/message/chat/message_chat.dart';
 import 'package:flutter_04/pages/message/message_page.dart';
+import 'package:flutter_04/pages/message/more/message_more_setting.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_attention.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_fans.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_score.dart';
@@ -108,6 +109,7 @@ class MyApp extends StatelessWidget {
           // "/registerPage": (context) => LoginRegister(),
           "/message": (context) => const MessagePage(),
           "/messageChat": (context) => const MessageChat(),
+          "/messageSetting": (context) => MessageMoreSetting(),
           "/test": (context) => const ImperativeModalSheetExample(),
           "/modeTest": (context) => ModeSheetTest(),
         },

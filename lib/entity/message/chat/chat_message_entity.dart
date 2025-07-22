@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:animated_emoji/emoji.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatMessageEntity {
@@ -14,6 +15,9 @@ class ChatMessageEntity {
   double containerHeight;
   double containerWidth;
   bool isWithdraw;
+  bool isShowDynamicEmoji;
+  int emojiIndex;
+  bool isLike;
 
   ChatMessageEntity({
     required this.msgId,
@@ -27,5 +31,8 @@ class ChatMessageEntity {
     this.containerHeight = 0,
     this.containerWidth = 0,
     this.isWithdraw = false,
+    this.isShowDynamicEmoji = false,
+    this.emojiIndex = 1,
+    this.isLike = false,
   });
 }
