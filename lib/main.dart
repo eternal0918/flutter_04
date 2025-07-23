@@ -9,6 +9,7 @@ import 'package:flutter_04/pages/home_bottom_navigation_bar.dart';
 import 'package:flutter_04/pages/login/login_page.dart';
 import 'package:flutter_04/pages/message/chat/message_chat.dart';
 import 'package:flutter_04/pages/message/message_page.dart';
+import 'package:flutter_04/pages/message/more/message_more_right.dart';
 import 'package:flutter_04/pages/message/more/message_more_setting.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_attention.dart';
 import 'package:flutter_04/pages/person/index/side/person_side_fans.dart';
@@ -94,7 +95,7 @@ class MyApp extends StatelessWidget {
           navigationBarTheme: _naviBarThemeData(),
         ),
         // home: HomeBottomNavigationBar(),
-        initialRoute: "/messageChat",
+        initialRoute: "/messageMoreRight",
         routes: {
           '/': (context) => const HomeBottomNavigationBar(),
           "/homeDetails": (context) => const HomeDetails(),
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
           "/message": (context) => const MessagePage(),
           "/messageChat": (context) => const MessageChat(),
           "/messageSetting": (context) => MessageMoreSetting(),
+          "/messageMoreRight": (context) => MessageMoreRight(),
           "/test": (context) => const ImperativeModalSheetExample(),
           "/modeTest": (context) => ModeSheetTest(),
         },

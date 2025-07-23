@@ -241,7 +241,7 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                             onTap: () {},
                             controller: _textController,
                             focusNode: _focusNode,
-                            style: TextStyle(fontSize: EternalFontSize.regular()),
+                            style: TextStyle(fontSize: EternalFontSize.medium(), letterSpacing: 1),
                             decoration: const InputDecoration(hintText: "", border: InputBorder.none, isCollapsed: true),
                             onSubmitted: _onSubmit,
                           ),
@@ -274,9 +274,9 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                       splashRadius: 20,
                       onPressed: () => _openBottomTools(),
                     ),
-                  if (_isSendButtonVisible && !_isBottomToolsVisible)
 
-                    ///发送按钮
+                  ///发送按钮
+                  if (_isSendButtonVisible && !_isBottomToolsVisible) ...[
                     ElevatedButton(
                       onPressed: () {
                         if (_textController.text.isNotEmpty) {
@@ -284,11 +284,14 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: const ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
-                        backgroundColor: Colors.deepPurple,
+                        elevation: 0,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
+                        backgroundColor: EternalColors.unSelectColor,
                       ),
                       child: Text("发送", style: TextStyle(fontSize: EternalFontSize.regular(), color: EternalColors.titleColor)),
                     ),
+                    SizedBox(width: EternalMargin.miniMargin)
+                  ],
                 ],
               ),
 
@@ -299,10 +302,10 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                     textEditingController: _textController,
                     onBackspacePressed: _onBackspacePressed,
                     config: const Config(
-                      columns: 8,
+                      columns: 7,
                       verticalSpacing: 0,
                       horizontalSpacing: 0,
-                      gridPadding: EdgeInsets.zero,
+                      gridPadding: EdgeInsets.all(10),
                       initCategory: Category.RECENT,
                       bgColor: Colors.transparent,
                       indicatorColor: Colors.blue,
@@ -317,13 +320,13 @@ class MessageChatBottomToolBarsState extends State<MessageChatBottomToolBars> wi
                       replaceEmojiOnLimitExceed: false,
                       noRecents: Text(
                         '选个表情试试吧，☺',
-                        style: TextStyle(fontSize: 20, color: Colors.black26),
+                        style: TextStyle(fontSize: 20, color: Colors.white54),
                         textAlign: TextAlign.center,
                       ),
                       loadingIndicator: SizedBox.shrink(),
                       tabIndicatorAnimDuration: kTabScrollDuration,
                       categoryIcons: CategoryIcons(),
-                      buttonMode: ButtonMode.MATERIAL,
+                      buttonMode: ButtonMode.CUPERTINO,
                       checkPlatformCompatibility: true,
                     ),
                   ),

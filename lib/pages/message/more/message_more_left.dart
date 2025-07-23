@@ -7,7 +7,6 @@ import 'package:flutter_04/base/eternal_navigator_route.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
-import 'package:flutter_04/pages/home/details/home_details.dart';
 import 'package:flutter_04/pages/home/details/two/home_details_two.dart';
 import 'package:flutter_04/pages/message/more/message_more_setting.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -31,7 +30,6 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
       data: ThemeData(
         useMaterial3: false,
         colorScheme: const ColorScheme.light()..copyWith(primary: Colors.black, secondary: Colors.black),
-        // fontFamily: 'HYZhengYuan',
       ),
       child: Material(
         color: Colors.transparent,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/constants/eternal_margin.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../constants/eternal_colors.dart';
 import '../../../constants/eternal_padding.dart';
@@ -15,8 +16,8 @@ class MessageMoreSetting extends StatefulWidget {
 }
 
 class _MessageMoreSettingState extends State<MessageMoreSetting> {
-  bool _userMsgCloseNotify = false;
-  bool _userStart = false;
+  bool _userMsgCloseNotifyFlag = false;
+  bool _userStarFlag = false;
   bool _userBlacklist = false;
   final double _borderSize = 0.2;
   final TextStyle _textStyle = TextStyle(
@@ -70,30 +71,27 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(horizontal: EternalPadding.defaultPadding),
                               title: Text("备注", style: _textStyle),
-                              trailing: Material(
-                                color: Colors.transparent,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "sisyphus",
-                                      style: TextStyle(
-                                        fontSize: EternalFontSize.regular(),
-                                        color: EternalColors.selectColor,
-                                      ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "sisyphus",
+                                    style: TextStyle(
+                                      fontSize: EternalFontSize.regular(),
+                                      color: EternalColors.selectColor,
                                     ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.chevron_right,
-                                        color: EternalColors.selectColor,
-                                        size: EternalIconSize.defaultSize,
-                                      ),
-                                      splashRadius: 20,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.chevron_right,
+                                      color: EternalColors.selectColor,
+                                      size: EternalIconSize.defaultSize,
                                     ),
-                                  ],
-                                ),
+                                    splashRadius: 20,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -163,7 +161,7 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() => _userStart = !_userStart);
+                              setState(() => _userStarFlag = !_userStarFlag);
                             },
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(horizontal: EternalPadding.defaultPadding),
@@ -172,9 +170,9 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                                 activeColor: EternalColors.getWarningColor(),
                                 inactiveThumbColor: EternalColors.getInfoColor(),
                                 dragStartBehavior: DragStartBehavior.start,
-                                value: _userStart,
+                                value: _userStarFlag,
                                 onChanged: (bool v) {
-                                  setState(() => _userStart = !_userStart);
+                                  setState(() => _userStarFlag = !_userStarFlag);
                                 },
                               ),
                             ),
@@ -230,7 +228,7 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() => _userMsgCloseNotify = !_userMsgCloseNotify);
+                              setState(() => _userMsgCloseNotifyFlag = !_userMsgCloseNotifyFlag);
                             },
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(horizontal: EternalPadding.defaultPadding),
@@ -239,9 +237,9 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                                 activeColor: EternalColors.getSuccessColor(),
                                 inactiveThumbColor: EternalColors.getInfoColor(),
                                 dragStartBehavior: DragStartBehavior.start,
-                                value: _userMsgCloseNotify,
+                                value: _userMsgCloseNotifyFlag,
                                 onChanged: (bool v) {
-                                  setState(() => _userMsgCloseNotify = !_userMsgCloseNotify);
+                                  setState(() => _userMsgCloseNotifyFlag = !_userMsgCloseNotifyFlag);
                                 },
                               ),
                             ),
@@ -315,20 +313,22 @@ class _MessageMoreSettingState extends State<MessageMoreSetting> {
                 ],
               ),
             ),
-            TextButton(
+            ElevatedButton.icon(
               onPressed: () {},
-              style: TextButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(200, 40),
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+                backgroundColor: EternalColors.getDangerColor(),
                 side: const BorderSide(color: Colors.transparent),
               ),
-              child: Text(
-                "删除",
+              icon: Icon(LucideIcons.userX, size: EternalIconSize.smallSize, color: Colors.white),
+              label: Text(
+                "删除用户",
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Colors.white,
                   letterSpacing: 2,
-                  fontSize: EternalFontSize.medium(),
+                  fontSize: EternalFontSize.regular(),
                 ),
               ),
             ),

@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_04/base/eternal_navigator_route.dart';
@@ -35,10 +37,17 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final GlobalKey<MessageChatBottomToolBarsState> _bottomToolsKey = GlobalKey<MessageChatBottomToolBarsState>();
   late AnimationController _listViewAnimationController;
+  String _connectionStatus = "";
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
+
+    initConnectivity();
+
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
     // 添加监听，didChangeMetrics
     WidgetsBinding.instance.addObserver(this);
@@ -79,6 +88,38 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
       _getContainerSize(message2, true);
     }
     _scrollToBottom();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      return;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      if (result.toString().contains(ConnectivityResult.wifi.toString())) {
+        _connectionStatus = "-WIFI";
+      } else if (result.toString().contains(ConnectivityResult.mobile.toString())) {
+        _connectionStatus = "-移动信号";
+      } else if (result.toString().contains(ConnectivityResult.none.toString())) {
+        _connectionStatus = "";
+      }
+    });
   }
 
 // 当应用程序的尺寸发生变化时会调用
@@ -150,85 +191,95 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: EternalColors.defaultColor,
-      resizeToAvoidBottomInset: false, //输入法不会顶起页面
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: EternalColors.defaultColor,
-        leading: IconButton(icon: const Icon(Icons.arrow_back), splashRadius: 20, onPressed: () => Navigator.of(context).pop()),
-        title: GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (context) => MessageMoreLeft(),
-            );
-          },
-          child: Row(
-            children: [
-              const CircleAvatar(backgroundImage: NetworkImage('https://picsum.photos/512/512'), radius: 20),
-              SizedBox(width: EternalMargin.smallMargin),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('John Doe', style: TextStyle(fontSize: EternalFontSize.medium())),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(borderRadius: BorderRadius.circular(50), child: Container(width: 10, height: 10, color: Colors.green)),
-                      SizedBox(width: EternalMargin.miniMargin),
-                      Text('在线', style: TextStyle(fontSize: EternalFontSize.base()))
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/chat/bg1.png'),
+          fit: BoxFit.cover,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.segment),
-            splashRadius: 20,
-            onPressed: () {
-              EternalNavigatorRoute.pushByDirect(context: context, page: MessageMoreRight(), direct: EternalRouteDirect.rightToLeft);
-            },
-          ),
-        ],
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // 触摸收起键盘
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    _bottomToolsKey.currentState?.closeBottomTools();
-                  },
-                  child: AnimatedList(
-                    key: _listKey,
-                    physics: const BouncingScrollPhysics(),
-                    controller: _scrollController,
-                    initialItemCount: _messages.length,
-                    itemBuilder: (context, index, animation) {
-                      return _messageItem(_messages[index], animation, index);
+      child: Scaffold(
+        // backgroundColor: EternalColors.defaultColor,
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false, //输入法不会顶起页面
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: EternalColors.defaultColor,
+          // backgroundColor: Colors.transparent,
+          leading: IconButton(icon: const Icon(Icons.arrow_back), splashRadius: 20, onPressed: () => Navigator.of(context).pop()),
+          title: GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => MessageMoreLeft(),
+              );
+            },
+            child: Row(
+              children: [
+                const CircleAvatar(backgroundImage: NetworkImage('https://picsum.photos/512/512'), radius: 20),
+                SizedBox(width: EternalMargin.smallMargin),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('John Doe', style: TextStyle(fontSize: EternalFontSize.medium())),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(borderRadius: BorderRadius.circular(50), child: Container(width: 10, height: 10, color: Colors.green)),
+                        SizedBox(width: EternalMargin.miniMargin),
+                        Text('在线${_connectionStatus.toString()}', style: TextStyle(fontSize: EternalFontSize.base()))
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.segment),
+              splashRadius: 20,
+              onPressed: () {
+                EternalNavigatorRoute.pushByDirect(context: context, page: MessageMoreRight(), direct: EternalRouteDirect.rightToLeft);
+              },
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      // 触摸收起键盘
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      _bottomToolsKey.currentState?.closeBottomTools();
                     },
+                    child: AnimatedList(
+                      key: _listKey,
+                      physics: const BouncingScrollPhysics(),
+                      controller: _scrollController,
+                      initialItemCount: _messages.length,
+                      itemBuilder: (context, index, animation) {
+                        return _messageItem(_messages[index], animation, index);
+                      },
+                    ),
                   ),
                 ),
-              ),
 
-              ///底部消息工具栏
-              MessageChatBottomToolBars(
-                key: _bottomToolsKey,
-                handleSubmitted: _handleSubmitted,
-              ),
-            ],
-          ),
-        ],
+                ///底部消息工具栏
+                MessageChatBottomToolBars(
+                  key: _bottomToolsKey,
+                  handleSubmitted: _handleSubmitted,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -260,9 +311,20 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
               Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    DateFormat('HH:mm:ss').format(message.time),
-                    style: TextStyle(fontSize: EternalFontSize.mini(), color: Colors.white70),
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                      child: Container(
+                        color: Colors.white.withOpacity(0.1),
+                        padding: EdgeInsets.symmetric(vertical: EternalPadding.miniPadding, horizontal: EternalPadding.smallPadding),
+                        child: Text(
+                          DateFormat('HH:mm:ss').format(message.time),
+                          style: TextStyle(fontSize: EternalFontSize.small(), color: Colors.white70),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -295,7 +357,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                         isLongPress: true,
                         onBeforePopup: () {
                           // 触发轻微震动反馈
-                          Vibration.vibrate(duration: 10,amplitude: 50);
+                          Vibration.vibrate(duration: 10, amplitude: 50);
                           FocusScope.of(context).requestFocus(FocusNode());
                         },
                         //箭头颜色
@@ -439,49 +501,48 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                         child:
                             //展示动态表情
                             message.isShowDynamicEmoji
-                                ? SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: AnimatedEmoji(AnimatedEmojis.values[message.emojiIndex], size: 100),
-                                  )
+                                ? SizedBox(height: 100, width: 100, child: AnimatedEmoji(AnimatedEmojis.values[message.emojiIndex], size: 100))
                                 : Container(
                                     clipBehavior: Clip.hardEdge,
                                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                                    decoration: BoxDecoration(color: EternalColors.boxDefaultColor, borderRadius: BorderRadius.circular(15)),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            message.isShowTime = !message.isShowTime;
-                                            _getContainerSize(message, false);
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(message.text, style: TextStyle(fontSize: EternalFontSize.regular(), color: Colors.white)),
-                                              AnimatedContainer(
-                                                height: message.containerHeight,
-                                                width: message.containerWidth,
-                                                clipBehavior: Clip.hardEdge,
-                                                decoration: const BoxDecoration(color: Colors.transparent),
-                                                duration: const Duration(milliseconds: 300),
-                                                curve: Curves.fastOutSlowIn,
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(height: EternalMargin.miniMargin),
-                                                    Text(
-                                                      DateFormat('HH:mm:ss').format(message.time),
-                                                      style: TextStyle(fontSize: EternalFontSize.small(), color: Colors.white70),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                                      child: Material(
+                                        color: Colors.white.withOpacity(0.1),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              message.isShowTime = !message.isShowTime;
+                                              _getContainerSize(message, false);
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(message.text, style: TextStyle(fontSize: EternalFontSize.regular(), color: Colors.white)),
+                                                AnimatedContainer(
+                                                  height: message.containerHeight,
+                                                  width: message.containerWidth,
+                                                  clipBehavior: Clip.hardEdge,
+                                                  decoration: const BoxDecoration(color: Colors.transparent),
+                                                  duration: const Duration(milliseconds: 300),
+                                                  curve: Curves.fastOutSlowIn,
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(height: EternalMargin.miniMargin),
+                                                      Text(
+                                                        DateFormat('HH:mm:ss').format(message.time),
+                                                        style: TextStyle(fontSize: EternalFontSize.small(), color: Colors.white70),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
