@@ -37,6 +37,7 @@ class _MessageMoreRightState extends State<MessageMoreRight> {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
+            color: Colors.black,
             border: Border.all(color: Colors.white, width: 2),
             borderRadius: BorderRadius.circular(50),
           ),

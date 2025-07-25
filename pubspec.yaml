@@ -86,6 +86,8 @@ dependencies:
   #  icon_forest: ^1.1.8   #icon
   vibration: ^3.1.3 # 震动反馈
   connectivity_plus: ^5.0.2 #获取网络信息（网络类型 WiFi or 移动）
+  faker: ^2.2.0  # 假数据（测试用）
+  animations: ^2.0.8 # 页面切换（自然过渡）
 
 dev_dependencies:
   flutter_test:

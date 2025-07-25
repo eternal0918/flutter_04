@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_04/base/eternal_navigator_route.dart';
@@ -24,6 +25,8 @@ import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../../constants/eternal_constants.dart';
+
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key});
 
@@ -39,15 +42,12 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
   late AnimationController _listViewAnimationController;
   String _connectionStatus = "";
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
 
     initConnectivity();
-
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
     // 添加监听，didChangeMetrics
     WidgetsBinding.instance.addObserver(this);
@@ -60,25 +60,30 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
     for (int i = 0; i < 20; i++) {
       int msgId1 = Random().nextInt(pow(2, 20).toInt());
       int msgId2 = Random().nextInt(pow(2, 20).toInt());
+
+      var msgOne = EternalConstants.getMockData;
+      var msgTwo = EternalConstants.getMockData;
       var message1 = ChatMessageEntity(
         msgId: msgId1,
-        text: '你好！',
+        text: msgOne.lorem.sentence(),
         isMe: false,
         time: DateTime.now().subtract(const Duration(minutes: 5)),
         isShowDynamicEmoji: Random().nextBool(),
         emojiIndex: Random().nextInt(300),
         avatar: 'https://picsum.photos/512/512',
         userName: 'John',
+        bgRate: Random().nextInt(5).ceilToDouble(),
       );
       var message2 = ChatMessageEntity(
         msgId: msgId2,
-        text: '你好！最近怎么样？',
+        text: msgTwo.lorem.sentence(),
         isMe: true,
         isShowDynamicEmoji: Random().nextBool(),
         emojiIndex: Random().nextInt(300),
         time: DateTime.now().subtract(const Duration(minutes: 4)),
         avatar: 'https://picsum.photos/512/412',
         userName: 'Me',
+        bgRate: Random().nextInt(5).ceilToDouble(),
       );
 
       // 添加一些测试消息
@@ -144,6 +149,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
         avatar: 'https://picsum.photos/512/${isMe ? 412 : 512}',
         userName: 'Me',
         isExceedTwoMinute: difference.inMinutes >= 1,
+        bgRate: Random().nextInt(5).ceilToDouble(),
       );
       _messages.add(message);
       _getContainerSize(message, true);
@@ -223,7 +229,10 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('John Doe', style: TextStyle(fontSize: EternalFontSize.medium())),
+                    Text(
+                      EternalConstants.getMockData.person.name(),
+                      style: TextStyle(fontSize: EternalFontSize.medium()),
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -297,7 +306,6 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
     // for (var element in AnimatedEmojis.values.sublist(0, 7)) {
     //   emojiBtn.add(IconButton(onPressed: () {}, splashRadius: 20, icon: AnimatedEmoji(element)));
     // }
-
     return SlideTransition(
       position: Tween<Offset>(
         begin: Offset(message.isMe ? 1.0 : -1.0, 0.0), // 是我 从右侧开始，是好友则从左侧开始
@@ -506,10 +514,20 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                                     clipBehavior: Clip.hardEdge,
                                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                                    child: ShaderMask(
+                                      shaderCallback: (bounds) => RadialGradient(
+                                        center: Alignment.topLeft,
+                                        radius: message.bgRate,
+                                        colors: [
+                                          Colors.white,
+                                          // Color.fromRGBO(51, 54, 58, 1),
+                                          Colors.grey,
+                                        ],
+                                        tileMode: TileMode.mirror,
+                                      ).createShader(bounds),
                                       child: Material(
-                                        color: Colors.white.withOpacity(0.1),
+                                        // color: Colors.white.withOpacity(0.1),
+                                        color: const Color.fromRGBO(51, 54, 58, 0.8),
                                         child: InkWell(
                                           onTap: () {
                                             setState(() {

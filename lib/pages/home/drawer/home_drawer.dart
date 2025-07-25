@@ -6,6 +6,7 @@ import 'package:flutter_04/components/eternal_mode_sheet.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_constants.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
+import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/constants/eternal_margin.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
 import 'package:flutter_04/pages/login/login_page.dart';
@@ -54,7 +55,7 @@ class _HomeDrawerPageState extends State<HomeDrawerPage> with TickerProviderStat
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(EternalConstants.imageUrl),
+                  image: NetworkImage(EternalConstants.randomImageUrl),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(Colors.grey.shade900.withOpacity(0.7), BlendMode.srcOver),
                 ),
@@ -77,6 +78,7 @@ class _HomeDrawerPageState extends State<HomeDrawerPage> with TickerProviderStat
                   minimumSize: const Size(100, 40),
                   foregroundColor: Colors.white,
                   backgroundColor: EternalColors.boxDefaultColor,
+                  elevation: 0,
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,6 +315,7 @@ class _HomeDrawerHeaderState extends State<HomeDrawerHeader> {
         bottom: EternalPadding.smallPadding,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -325,18 +328,70 @@ class _HomeDrawerHeaderState extends State<HomeDrawerHeader> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 3),
-              image: DecorationImage(image: NetworkImage(EternalConstants.imageUrl), fit: BoxFit.fill),
+              image: DecorationImage(image: NetworkImage(EternalConstants.getImage()), fit: BoxFit.fill),
             ),
           ),
-          TextButton.icon(icon: Icon(Icons.person_rounded, size: 15), label: Text("ETERNAL"), onPressed: () {}),
-          TextButton.icon(icon: Icon(Icons.phone_android, size: 15), label: Text("18069436491"), onPressed: () {}),
-          TextButton.icon(icon: Icon(Icons.email_rounded, size: 15), label: Text("eternal0918@163.com"), onPressed: () {}),
+          SizedBox(height: EternalMargin.smallMargin),
+
+          Material(
+            clipBehavior: Clip.hardEdge,
+            color: Colors.transparent,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            child: InkWell(
+              onTap: () => print(""),
+              child: Container(
+                padding: EdgeInsets.all(EternalPadding.smallPadding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(LucideIcons.circleUserRound, size: EternalIconSize.smallSize),
+                    SizedBox(width: EternalMargin.smallMargin),
+                    Text(EternalConstants.getMockData.person.name(), style: TextStyle(fontSize: EternalFontSize.regular())),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Material(
+            clipBehavior: Clip.hardEdge,
+            color: Colors.transparent,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            child: InkWell(
+              onTap: () => print(""),
+              child: Container(
+                padding: EdgeInsets.all(EternalPadding.smallPadding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(LucideIcons.smartphone, size: EternalIconSize.smallSize),
+                    SizedBox(width: EternalMargin.smallMargin),
+                    Text("18069436491", style: TextStyle(fontSize: EternalFontSize.regular())),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Material(
+            clipBehavior: Clip.hardEdge,
+            color: Colors.transparent,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            child: InkWell(
+              onTap: () => print(""),
+              child: Container(
+                padding: EdgeInsets.all(EternalPadding.smallPadding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(LucideIcons.mailbox, size: EternalIconSize.smallSize),
+                    SizedBox(width: EternalMargin.smallMargin),
+                    Text("eternal0918@163.com", style: TextStyle(fontSize: EternalFontSize.regular())),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
-    // return BackdropFilter(
-    //   filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-    //   child:
-    // );
   }
 }

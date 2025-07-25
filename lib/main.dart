@@ -93,9 +93,17 @@ class MyApp extends StatelessWidget {
           ),
           // fontFamily: 'HYZhengYuan',
           navigationBarTheme: _naviBarThemeData(),
+
+          ///默认 页面切换效果
+          // pageTransitionsTheme: PageTransitionsTheme(
+          //   builders: <TargetPlatform, PageTransitionsBuilder>{
+          //     TargetPlatform.android: ZoomPageTransitionsBuilder(),
+          //   },
+          // ),
         ),
+
         // home: HomeBottomNavigationBar(),
-        initialRoute: "/messageMoreRight",
+        initialRoute: "/",
         routes: {
           '/': (context) => const HomeBottomNavigationBar(),
           "/homeDetails": (context) => const HomeDetails(),
@@ -107,7 +115,6 @@ class MyApp extends StatelessWidget {
           "/releasePublish": (context) => const ReleasePublish(),
           "/releaseDetails": (context) => const ReleaseDetails(),
           "/loginPage": (context) => const LoginPage(),
-          // "/registerPage": (context) => LoginRegister(),
           "/message": (context) => const MessagePage(),
           "/messageChat": (context) => const MessageChat(),
           "/messageSetting": (context) => MessageMoreSetting(),

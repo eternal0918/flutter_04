@@ -1,18 +1,23 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/pages/message/chat/message_chat.dart';
+import 'package:flutter_04/pages/message/index/message_index_menu.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 
 import '../../base/eternal_navigator_route.dart';
 import '../../constants/eternal_colors.dart';
 import '../../constants/eternal_constants.dart';
 import '../../constants/eternal_margin.dart';
 import '../../constants/eternal_padding.dart';
+import '../../entity/message/chat/message_user_entity.dart';
 import '../../toasts/CustomAnimationWidget.dart';
 
 class MessagePage extends StatelessWidget {
@@ -38,9 +43,23 @@ class _MessageScrollViewState extends State<MessageScrollView> {
   bool _isRefreshing = false;
   String loadingText = "加载中.....";
 
+  final List<MessageUserEntity> _userList = [];
+
   @override
   void initState() {
     super.initState();
+    for (int i = 0; i < 20; i++) {
+      var userData = EternalConstants.getMockData;
+      MessageUserEntity userInfo = MessageUserEntity(
+        userId: Random().nextInt(9999),
+        text: EternalConstants.getMockData.lorem.sentence(),
+        avatar: EternalConstants.getImage(),
+        userName: userData.person.name(),
+        time: userData.date.dateTime(),
+        msgCount: Random().nextInt(99),
+      );
+      _userList.add(userInfo);
+    }
     _controller = ScrollController();
   }
 
@@ -96,12 +115,6 @@ class _MessageScrollViewState extends State<MessageScrollView> {
             elevation: 0,
             expandedHeight: 130,
             collapsedHeight: 80,
-            // bottom: PreferredSize(
-            //   preferredSize: Size.fromHeight(10),
-            //   child: Row(
-            //     children: [FlutterLogo()],
-            //   ),
-            // ),
             flexibleSpace: FlexibleSpaceBar(
               expandedTitleScale: 1.3,
               titlePadding: EdgeInsets.only(bottom: EternalPadding.smallPadding),
@@ -137,7 +150,10 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           ),
                         ),
                         SizedBox(height: EternalMargin.miniMargin),
-                        Text("Eternal", style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.titleColor))
+                        Text(
+                          Faker().person.name(),
+                          style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.titleColor),
+                        ),
                       ],
                     );
                   },
@@ -156,7 +172,17 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("会话", style: TextStyle(fontSize: EternalFontSize.medium())),
-                  const Icon(Icons.more_horiz),
+                  IconButton(
+                    onPressed: () {
+                      final modalRoute = ModalSheetRoute(
+                        transitionDuration: const Duration(milliseconds: 400),
+                        builder: (context) => const MessageIndexMenu(),
+                      );
+                      Navigator.push(context, modalRoute);
+                    },
+                    icon: const Icon(Icons.more_horiz),
+                    splashRadius: 20,
+                  )
                 ],
               ),
             ),
@@ -166,13 +192,14 @@ class _MessageScrollViewState extends State<MessageScrollView> {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
+                    var userInfo = _userList[index];
                     return Dismissible(
                       key: Key(index.toString()),
                       onDismissed: (directory) {
                         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('已移除 Eternal ${index + 1} 会话.')));
                         BotToast.showText(
                           contentPadding: EdgeInsets.all(EternalPadding.smallPadding),
-                          text: '已移除 Eternal ${index + 1} 会话.',
+                          text: '已移除 ${userInfo.userName} 会话.',
                           textStyle: TextStyle(fontSize: EternalFontSize.regular(), color: EternalColors.titleColor),
                           wrapToastAnimation: (controller, cancel, Widget child) => CustomAnimationWidget(
                             controller: controller,
@@ -180,9 +207,10 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           ),
                         );
                       },
-                      background: Container(color: Colors.redAccent, child: const Icon(Icons.remove_circle_outline)),
+                      background: Container(color: EternalColors.getDangerColor(), child: const Icon(Icons.remove_circle_outline)),
                       child: InkWell(
                         onTap: () {
+                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MessageChat()));
                           EternalNavigatorRoute.push(context, MessageChat());
                         },
                         child: Container(
@@ -192,15 +220,16 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                             direction: Axis.horizontal, // 设置布局方向为垂直
                             children: [
                               SizedBox(
-                                width: 35,
+                                width: 40,
                                 child: Stack(
                                   children: [
+                                    ///用户头像
                                     Positioned(
                                       child: ClipOval(
                                         child: CachedNetworkImage(
                                           imageUrl: EternalConstants.getImage(),
-                                          height: 30,
-                                          width: 30,
+                                          height: 40,
+                                          width: 40,
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => const CircularProgressIndicator(),
                                           errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -209,7 +238,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                     ),
                                     Positioned(
                                       bottom: 0,
-                                      right: 1,
+                                      right: -1,
                                       child: Container(
                                         height: 12,
                                         width: 12,
@@ -237,10 +266,11 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
+                                                ///用户名称
                                                 Align(
                                                   alignment: Alignment.centerLeft,
                                                   child: Text(
-                                                    "Eternal ${index + 1}",
+                                                    userInfo.userName,
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: EternalFontSize.regular(),
@@ -248,10 +278,12 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                                     ),
                                                   ),
                                                 ),
+
+                                                ///消息内容
                                                 Align(
                                                     alignment: Alignment.centerLeft,
                                                     child: Text(
-                                                      "A Material carousel widget that presents a scrollable list of items, each of which can dynamically change size based on the chosen layout.",
+                                                      userInfo.text,
                                                       style: TextStyle(color: EternalColors.secondTextColor, fontSize: EternalFontSize.base()),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 1,
@@ -262,11 +294,30 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
+                                            ///消息时间
                                             Text(
                                               EternalConstants.getCurrentTime(),
                                               style: TextStyle(fontSize: EternalFontSize.small(), color: EternalColors.secondTextColor),
                                             ),
-                                            const Icon(Icons.circle, size: 10, color: Colors.redAccent)
+                                            // const Icon(Icons.circle, size: 5, color: Colors.redAccent),
+                                            ///红点 消息数量
+                                            Container(
+                                              padding: const EdgeInsets.only(top: 2, bottom: 2, left: 3, right: 3),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(4),
+                                                color: EternalColors.getDangerColor(),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  userInfo.msgCount.toString(),
+                                                  style: TextStyle(
+                                                    fontSize: EternalFontSize.mini(),
+                                                    fontStyle: FontStyle.italic,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         )
                                       ]),
@@ -281,42 +332,6 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                               ),
                             ],
                           ),
-
-                          // Wrap(
-                          //   children: [
-                          //     ClipOval(
-                          //       child: CachedNetworkImage(
-                          //         imageUrl: EternalConstants.getImage(),
-                          //         height: 40,
-                          //         width: 40,
-                          //         fit: BoxFit.cover,
-                          //         placeholder: (context, url) =>
-                          //             const CircularProgressIndicator(),
-                          //         errorWidget: (context, url, error) =>
-                          //             const Icon(Icons.error),
-                          //       ),
-                          //     ),
-                          //     Column(
-                          //       children: [
-                          //         Row(
-                          //           children: [
-                          //             Container(
-                          //               child: Text("xxxxxxxxxxxxxxxxx"),
-                          //             )
-                          //           ],
-                          //         ),
-                          //         SizedBox(
-                          //           height: 1,
-                          //           width: double.infinity,
-                          //           child: DecoratedBox(
-                          //             decoration:
-                          //                 BoxDecoration(color: EternalColors.boxDefaultColor),
-                          //           ),
-                          //         )
-                          //       ],
-                          //     )
-                          //   ],
-                          // ),
                         ),
                       ),
                     );

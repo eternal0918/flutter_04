@@ -18,6 +18,7 @@ class ChatMessageEntity {
   bool isShowDynamicEmoji;
   int emojiIndex;
   bool isLike;
+  double bgRate;
 
   ChatMessageEntity({
     required this.msgId,
@@ -34,5 +35,6 @@ class ChatMessageEntity {
     this.isShowDynamicEmoji = false,
     this.emojiIndex = 1,
     this.isLike = false,
+    this.bgRate = 1,
   });
 }

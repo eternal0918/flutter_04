@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_04/base/eternal_navigator_route.dart';
@@ -15,6 +16,7 @@ import 'package:smooth_sheets/smooth_sheets.dart';
 import '../../../constants/eternal_constants.dart';
 import '../../../constants/eternal_font_size.dart';
 import '../../../constants/eternal_margin.dart';
+import '../../home/details/one/home_details_one.dart';
 
 class MessageMoreLeft extends StatefulWidget {
   const MessageMoreLeft({super.key});
@@ -117,7 +119,9 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                                                     style: TextStyle(fontSize: EternalFontSize.base(), color: Colors.black),
                                                     children: [
                                                       WidgetSpan(
-                                                          alignment: PlaceholderAlignment.middle, child: SizedBox(width: EternalFontSize.base() * 2)),
+                                                        alignment: PlaceholderAlignment.middle,
+                                                        child: SizedBox(width: EternalFontSize.base() * 2),
+                                                      ),
                                                       TextSpan(text: '京口瓜洲一水间，钟山只隔数重山。春风又绿江南岸，明月何时照我还。'),
                                                     ],
                                                   ),
@@ -364,58 +368,67 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                                                   addRepaintBoundaries: false,
                                                   itemBuilder: (BuildContext context, int index) {
                                                     ///图片
-                                                    return Stack(
-                                                      children: [
-                                                        Container(
-                                                          clipBehavior: Clip.hardEdge,
-                                                          decoration: ShapeDecoration(
-                                                            shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                                                          ),
-                                                          child: CachedNetworkImage(
-                                                            imageUrl: EternalConstants.getImage(),
-                                                            height: 180,
-                                                            width: 180 / 4 * 3,
-                                                            fit: BoxFit.cover,
-                                                            placeholder: (context, url) => const LinearProgressIndicator(
-                                                              color: Colors.black,
+                                                    return OpenContainer(
+                                                      transitionType: ContainerTransitionType.fade,
+                                                      openBuilder: (BuildContext context, VoidCallback _) {
+                                                        return HomeDetailsOne();
+                                                      },
+                                                      closedElevation: 0.0,
+                                                      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+                                                        return Stack(
+                                                          children: [
+                                                            Container(
+                                                              clipBehavior: Clip.hardEdge,
+                                                              decoration: ShapeDecoration(
+                                                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                                              ),
+                                                              child: CachedNetworkImage(
+                                                                imageUrl: EternalConstants.getImage(),
+                                                                height: 180,
+                                                                width: 180 / 4 * 3,
+                                                                fit: BoxFit.cover,
+                                                                placeholder: (context, url) => const LinearProgressIndicator(
+                                                                  color: Colors.black,
+                                                                ),
+                                                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                              ),
                                                             ),
-                                                            errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          height: 180,
-                                                          width: 180 / 4 * 3,
-                                                          clipBehavior: Clip.hardEdge,
-                                                          decoration: ShapeDecoration(
-                                                            shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                                                            // 渐变遮罩
-                                                            gradient: LinearGradient(
-                                                              begin: Alignment.topCenter,
-                                                              end: Alignment.bottomCenter,
-                                                              colors: [
-                                                                Colors.black.withOpacity(0.0), // 顶部透明
-                                                                Colors.black.withOpacity(0.0), // 顶部透明
-                                                                Colors.black.withOpacity(0.0), // 顶部透明
-                                                                Colors.black.withOpacity(0.0), // 顶部透明
-                                                                Colors.black.withOpacity(0.3), // 顶部透明
-                                                                Colors.black.withOpacity(0.5), // 顶部透明
-                                                                Colors.black.withOpacity(0.7), // 底部黑色
-                                                              ],
+                                                            Container(
+                                                              height: 180,
+                                                              width: 180 / 4 * 3,
+                                                              clipBehavior: Clip.hardEdge,
+                                                              decoration: ShapeDecoration(
+                                                                shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                                                // 渐变遮罩
+                                                                gradient: LinearGradient(
+                                                                  begin: Alignment.topCenter,
+                                                                  end: Alignment.bottomCenter,
+                                                                  colors: [
+                                                                    Colors.black.withOpacity(0.0), // 顶部透明
+                                                                    Colors.black.withOpacity(0.0), // 顶部透明
+                                                                    Colors.black.withOpacity(0.0), // 顶部透明
+                                                                    Colors.black.withOpacity(0.0), // 顶部透明
+                                                                    Colors.black.withOpacity(0.3), // 顶部透明
+                                                                    Colors.black.withOpacity(0.5), // 顶部透明
+                                                                    Colors.black.withOpacity(0.7), // 底部黑色
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                        Positioned(
-                                                          bottom: 0,
-                                                          child: Container(
-                                                            width: 180 / 4 * 3,
-                                                            padding: EdgeInsets.all(EternalPadding.smallPadding),
-                                                            child: Text(
-                                                              "A Material carousel widget that presents a scrollable list of items",
-                                                              style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.titleColor),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
+                                                            Positioned(
+                                                              bottom: 0,
+                                                              child: Container(
+                                                                width: 180 / 4 * 3,
+                                                                padding: EdgeInsets.all(EternalPadding.smallPadding),
+                                                                child: Text(
+                                                                  EternalConstants.getMockData.lorem.sentence(),
+                                                                  style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.titleColor),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
                                                     );
                                                   },
                                                   separatorBuilder: (BuildContext context, int index) {
@@ -478,9 +491,7 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                                                 child: CachedNetworkImage(
                                                   imageUrl: EternalConstants.getImage(),
                                                   fit: BoxFit.cover,
-                                                  placeholder: (context, url) => const LinearProgressIndicator(
-                                                    color: Colors.black,
-                                                  ),
+                                                  placeholder: (context, url) => const LinearProgressIndicator(color: Colors.black),
                                                   errorWidget: (context, url, error) => const Icon(Icons.error),
                                                 ),
                                               );
@@ -488,10 +499,11 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                                             childCount: 50,
                                           ),
                                           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                              maxCrossAxisExtent: parentWidth / 2 - 10,
-                                              childAspectRatio: 3 / 4,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 10),
+                                            maxCrossAxisExtent: parentWidth / 2 - 10,
+                                            childAspectRatio: 3 / 4,
+                                            mainAxisSpacing: 10,
+                                            crossAxisSpacing: 10,
+                                          ),
                                         ),
                                         SliverToBoxAdapter(child: SizedBox(height: EternalMargin.normalMargin))
                                       ],
