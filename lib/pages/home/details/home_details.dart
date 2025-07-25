@@ -13,8 +13,6 @@ class HomeDetails extends StatelessWidget {
       children: [
         HomeDetailsOne(),
         HomeDetailsTwo(),
-
-
       ],
     );
   }

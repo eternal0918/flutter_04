@@ -219,7 +219,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => MessageMoreLeft(),
+                builder: (context) => const MessageMoreLeft(),
               );
             },
             child: Row(
@@ -348,7 +348,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
                         context: context,
-                        builder: (context) => MessageMoreLeft(),
+                        builder: (context) => const MessageMoreLeft(),
                       );
                     },
                     child: CircleAvatar(backgroundImage: NetworkImage(message.avatar), radius: 16),

@@ -23,7 +23,7 @@ class HomeBottomNavigationBar extends StatefulWidget {
 
 class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> with TickerProviderStateMixin {
   ///tab标记索引
-  int _countIndex = 3;
+  int _countIndex = 0;
   final List<Widget> _pages = const [
     HomePage(),
     CreatePage(),

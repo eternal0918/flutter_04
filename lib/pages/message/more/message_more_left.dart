@@ -371,9 +371,11 @@ class _MessageMoreLeftState extends State<MessageMoreLeft> {
                                                     return OpenContainer(
                                                       transitionType: ContainerTransitionType.fade,
                                                       openBuilder: (BuildContext context, VoidCallback _) {
-                                                        return HomeDetailsOne();
+                                                        return const HomeDetailsOne();
                                                       },
                                                       closedElevation: 0.0,
+                                                      closedColor: Colors.transparent,
+                                                      transitionDuration: const Duration(milliseconds: 500),
                                                       closedBuilder: (BuildContext context, VoidCallback openContainer) {
                                                         return Stack(
                                                           children: [
