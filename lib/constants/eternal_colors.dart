@@ -7,7 +7,7 @@ class EternalColors {
 
   static Color getPrimaryColor() {
     List<Color> colorList = [
-      Colors.orange.shade900,
+      Colors.deepOrangeAccent,
       Colors.deepPurple,
     ];
 
@@ -51,8 +51,8 @@ class EternalColors {
 
   ///方案1
   // static const Color defaultColor = Color.fromRGBO(53, 55, 68, 1);
-  // static const Color boxDefaultColor = Color.fromRGBO(59, 61, 74, 1);
-  // static const Color unSelectColor = Color.fromRGBO(78, 80, 93, 1);
+  // static const Color boxDefaultColor = Color.fromRGBO(65, 69, 81, 1);
+  // static const Color unSelectColor = Color.fromRGBO(82, 84, 97, 1);
   // static const Color selectColor = Color.fromRGBO(149, 151, 164, 1);
 
   ///方案2

@@ -46,7 +46,7 @@ dependencies:
   #  flutter_swiper: ^1.1.6  # 轮播图
   flutter_swiper_null_safety: ^1.0.2
   waterfall_flow: any   # 瀑布流
-  flutter_spinkit: ^5.1.0   # Loading动画
+  flutter_spinkit: 5.0.0   # Loading动画
   flutter_cube: ^0.1.1  # 3D模型
   animated_flip_counter: ^0.2.6   #数字动画
   shimmer: ^3.0.0   #闪光效果
@@ -68,6 +68,7 @@ dependencies:
   #lottie: 2.4.0 #lottie插件
   simple_shadow: ^0.3.1 #png图片阴影
   flutter_card_swiper: 7.0.0 #左右滑动的卡片堆叠效果
+  swipable_stack: ^2.0.0
   #  scaled_app: 2.0.0 #固定手机宽度等比例缩放（解决不同设备显示大小问题）
   hyper_effects: 0.2.0 #精美的效果和动画
   circular_menu: ^2.0.0  #扇形按钮
@@ -88,7 +89,7 @@ dependencies:
   connectivity_plus: ^5.0.2 #获取网络信息（网络类型 WiFi or 移动）
   faker: ^2.2.0  # 假数据（测试用）
   animations: ^2.0.8 # 页面切换（自然过渡）
-
+  permission_handler: 11.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

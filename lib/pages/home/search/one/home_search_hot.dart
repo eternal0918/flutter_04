@@ -41,12 +41,14 @@ class _HomeSearchHotState extends State<HomeSearchHot> {
                   });
                 });
               },
-              icon: _isLoading
+              icon:
+              _isLoading
                   ? SpinKitHourGlass(
                       color: EternalColors.secondTextColor,
                       size: EternalIconSize.smallSize,
                     )
-                  : Icon(
+                  :
+              Icon(
                       Icons.hourglass_bottom_rounded,
                       size: EternalIconSize.smallSize,
                       color: EternalColors.secondTextColor,

@@ -12,6 +12,7 @@ import 'package:flutter_04/pages/home/category/home_category_simple_details.dart
 import 'package:flutter_04/pages/home/details/home_details.dart';
 import 'package:flutter_04/pages/home/details/two/home_details_two.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 
 import 'home_fire_body_content.dart';
 import 'home_fire_body_image.dart';
@@ -55,14 +56,6 @@ class _HomeFireSliverGridState extends State<HomeFireSliverGrid> with TickerProv
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: EternalColors.boxDefaultColor,
               border: Border.all(color: EternalColors.unSelectColor, width: 0.2),
-              // boxShadow: const [
-              //   BoxShadow(
-              //       color: Colors.black26,
-              //       offset: Offset(0.0, 4.0), //阴影xy轴偏移量
-              //       blurRadius: 5.0, //阴影模糊程度
-              //       spreadRadius: -4.0 //阴影扩散程度
-              //       )
-              // ],
             ),
             child: InkWell(
               onTap: () {
@@ -76,15 +69,13 @@ class _HomeFireSliverGridState extends State<HomeFireSliverGrid> with TickerProv
                       Wrap(
                         children: [
                           InkWell(
-                              onTap: () {
-                                EternalNavigatorRoute.push(context, const HomeDetailsTwo());
-                              },
+                              onTap: () => EternalNavigatorRoute.push(context, const HomeDetailsTwo()),
                               child: Wrap(
                                 spacing: EternalMargin.smallMargin,
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   ///作者头像
-                                  CircleAvatar(backgroundImage: NetworkImage(EternalConstants.imageUrl), radius: 25),
+                                  CircleAvatar(backgroundImage: NetworkImage(EternalConstants.getImage()), radius: 25),
                                   Wrap(
                                     direction: Axis.vertical,
                                     spacing: EternalMargin.miniMargin,
@@ -118,11 +109,13 @@ class _HomeFireSliverGridState extends State<HomeFireSliverGrid> with TickerProv
                         child: IconButton(
                           icon: const Icon(Icons.more_vert_rounded),
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return HomeCategorySimpleDetails();
-                                });
+                            Navigator.push(
+                              context,
+                              ModalSheetRoute(
+                                transitionDuration: const Duration(milliseconds: 400),
+                                builder: (context) => HomeCategorySimpleDetails(),
+                              ),
+                            );
                           },
                         ),
                       )
@@ -136,36 +129,8 @@ class _HomeFireSliverGridState extends State<HomeFireSliverGrid> with TickerProv
 
                   ///内容
                   const HomeFireBodyContent(),
-
-                  // ///评论数
-                  // ElevatedButton(
-                  //   onPressed: () {},
-                  //   style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.transparent,
-                  //       shadowColor: Colors.transparent,
-                  //       minimumSize: Size(double.infinity, EternalMargin.largeMargin)
-                  //   ),
-                  //   child: Wrap(
-                  //     crossAxisAlignment: WrapCrossAlignment.center,
-                  //     spacing: EternalMargin.miniMargin,
-                  //     children: [
-                  //       Icon(LucideIcons.messagesSquare, size: EternalIconSize.smallSize, color: EternalColors.textColor),
-                  //       Text(
-                  //         "共有 ${Random().nextInt(9999)} 条评论",
-                  //         style: TextStyle(color: EternalColors.textColor, fontSize: EternalFontSize.base()),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
-              // child: Flex(
-              //   direction: Axis.horizontal,
-              //   children: [
-              //     Expanded(flex: 2, child: HomeFireBodyImage()),
-              //     Expanded(flex: 3, child: HomeFireBodyContent())
-              //   ],
-              // ),
             ),
           );
         },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_04/base/eternal_navigator_route.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_constants.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 import 'package:flutter_04/constants/eternal_icon_size.dart';
 import 'package:flutter_04/constants/eternal_margin.dart';
 import 'package:flutter_04/constants/eternal_padding.dart';
@@ -19,7 +20,7 @@ class _HomeDetailsAttentionPlateState extends State<HomeDetailsAttentionPlate> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 155,
+      height: 170,
       decoration: BoxDecoration(
         color: EternalColors.boxDefaultColor,
         borderRadius: BorderRadius.circular(10),
@@ -28,25 +29,16 @@ class _HomeDetailsAttentionPlateState extends State<HomeDetailsAttentionPlate> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: double.infinity,
             margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.symmetric(
-              vertical: EternalPadding.smallPadding,
-              horizontal: EternalPadding.defaultPadding,
-            ),
+            padding: EdgeInsets.symmetric(vertical: EternalPadding.smallPadding, horizontal: EternalPadding.defaultPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "TA关注的人",
-                  style: TextStyle(color: EternalColors.titleColor, fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Icon(Icons.arrow_forward_ios_rounded, size: EternalIconSize.smallSize),
-                )
+                Text("TA关注的人", style: TextStyle(color: EternalColors.titleColor, fontWeight: FontWeight.bold, fontSize: EternalFontSize.medium())),
+                InkWell(onTap: () {}, child: Icon(Icons.arrow_forward_ios_rounded, size: EternalIconSize.smallSize))
               ],
             ),
           ),
@@ -66,7 +58,7 @@ class _HomeDetailsAttentionPlateState extends State<HomeDetailsAttentionPlate> {
                     spacing: EternalMargin.smallMargin,
                     children: [
                       CircleAvatar(backgroundImage: NetworkImage(EternalConstants.getImage()), radius: 35),
-                      Text("ETERNAL")
+                      Text(EternalConstants.getMockData.person.name())
                     ],
                   ),
                 );

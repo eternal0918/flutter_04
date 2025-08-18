@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_04/components/eternal_key_board_height.dart';
 import 'package:flutter_04/constants/eternal_colors.dart';
 import 'package:flutter_04/constants/eternal_constants.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 
 class HomeDetailsRemarkSecond extends StatefulWidget {
   const HomeDetailsRemarkSecond({Key? key}) : super(key: key);
@@ -29,14 +30,16 @@ class _HomeDetailsRemarkSecondState extends State<HomeDetailsRemarkSecond>
       children: [
         Expanded(
           flex: 1,
-          child: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.randomImageUrl), radius: 25),
+          child: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.randomImageUrl), radius: 22),
         ),
         Expanded(
           flex: 5,
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: EternalColors.boxDefaultColor,
-                shape: StadiumBorder(),
+                backgroundColor: Colors.black26,
+                shape: const StadiumBorder(),
+                foregroundColor: Colors.grey,
+                shadowColor: Colors.transparent,
                 elevation: 0,
               ),
               onPressed: () {
@@ -90,7 +93,7 @@ class _RemarkSecondButtonState extends State<RemarkSecondButton> with WidgetsBin
       children: [
         Text(
           "来说点什么吧 . . .",
-          style: TextStyle(color: EternalColors.selectColor, fontSize: 15),
+          style: TextStyle(color: EternalColors.selectColor, fontSize: EternalFontSize.regular()),
         ),
         Wrap(
           spacing: 0,

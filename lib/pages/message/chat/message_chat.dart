@@ -42,6 +42,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
   late AnimationController _listViewAnimationController;
   String _connectionStatus = "";
   final Connectivity _connectivity = Connectivity();
+  var _userName = EternalConstants.getMockData.person.name();
 
   @override
   void initState() {
@@ -197,6 +198,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -230,7 +232,7 @@ class _MessageChatState extends State<MessageChat> with WidgetsBindingObserver, 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      EternalConstants.getMockData.person.name(),
+                      _userName,
                       style: TextStyle(fontSize: EternalFontSize.medium()),
                     ),
                     Row(

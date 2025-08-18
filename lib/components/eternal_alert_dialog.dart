@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_04/constants/eternal_font_size.dart';
 
 import '../constants/eternal_colors.dart';
 import '../constants/eternal_margin.dart';
@@ -72,7 +73,7 @@ class _EternalAlertDialogState extends State<EternalAlertDialog> {
       title: TextButton.icon(
         onPressed: () {},
         icon: titleIcon,
-        label: Text(title!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        label: Text(title!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: EternalFontSize.large())),
         style: TextButton.styleFrom(alignment: Alignment.topLeft),
       ),
       content: content,
@@ -85,10 +86,13 @@ class _EternalAlertDialogState extends State<EternalAlertDialog> {
           children: [
             Expanded(
               flex: 1,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   onPressed: cancel,
-                  style: ElevatedButton.styleFrom(
-                    shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  style: OutlinedButton.styleFrom(
+                    // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                    shape: const StadiumBorder(),
+                    backgroundColor: EternalColors.boxDefaultColor,
+                    side: const BorderSide(color: Colors.transparent),
                   ),
                   child: cancelContent),
             ),
@@ -97,10 +101,14 @@ class _EternalAlertDialogState extends State<EternalAlertDialog> {
             ),
             Expanded(
               flex: 1,
-              child: ElevatedButton(
+              child: OutlinedButton(
                 onPressed: confirm,
-                style: ElevatedButton.styleFrom(
-                  shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                style: OutlinedButton.styleFrom(
+                  // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  shape: const StadiumBorder(),
+                  foregroundColor: Color.fromRGBO(68, 138, 255, 0.5),
+                  backgroundColor: const Color.fromRGBO(68, 138, 255, 0.2),
+                  side: const BorderSide(color: Colors.transparent),
                 ),
                 child: confirmContent,
               ),

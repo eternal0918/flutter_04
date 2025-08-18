@@ -33,6 +33,7 @@ class _HomeFireBodyContentState extends State<HomeFireBodyContent> {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
+            color: Colors.black,
             border: Border.all(color: Colors.white, width: 2),
             borderRadius: BorderRadius.circular(50),
           ),

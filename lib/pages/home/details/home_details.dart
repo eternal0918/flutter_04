@@ -10,7 +10,8 @@ class HomeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView(
-      children: [
+      physics: const NeverScrollableScrollPhysics(),
+      children: const [
         HomeDetailsOne(),
         HomeDetailsTwo(),
       ],
