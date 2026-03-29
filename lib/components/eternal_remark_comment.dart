@@ -43,8 +43,8 @@ class _EternalRemarkCommentState extends State<EternalRemarkComment> with Single
     return Column(
       children: [
         ExpansionTile(
-          tilePadding: EdgeInsets.only(top: EternalPadding.miniPadding,left: EternalPadding.normalPadding,right: EternalPadding.normalPadding),
-          childrenPadding: EdgeInsets.only(left: EternalPadding.defaultPadding,bottom: EternalPadding.smallPadding),
+          tilePadding: EdgeInsets.only(top: EternalPadding.miniPadding, left: EternalPadding.normalPadding, right: EternalPadding.normalPadding),
+          childrenPadding: EdgeInsets.only(left: EternalPadding.defaultPadding, bottom: EternalPadding.smallPadding),
           backgroundColor: Colors.black26,
           collapsedIconColor: EternalColors.unSelectColor,
           shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -54,7 +54,7 @@ class _EternalRemarkCommentState extends State<EternalRemarkComment> with Single
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${mockData.person.name()} #$index', style: TextStyle(color: EternalColors.selectColor, fontSize: EternalFontSize.base())),
+                  Text(mockData.person.name(), style: TextStyle(color: EternalColors.selectColor, fontSize: EternalFontSize.base())),
                   SizedBox(height: EternalMargin.miniMargin),
                   Text(
                     EternalConstants.getMockData.lorem.sentence(),
@@ -95,10 +95,10 @@ class _EternalRemarkCommentState extends State<EternalRemarkComment> with Single
               )
             ],
           ),
-          leading: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.randomImageUrl), radius: 20),
+          leading: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.getImage()), radius: 20),
           children: List<Widget>.generate(5, (index) {
             return ListTile(
-              leading: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.randomImageUrl), radius: 15),
+              leading: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.getImage()), radius: 15),
               title: Text(mockData.person.name(), style: TextStyle(fontSize: EternalFontSize.base(), color: EternalColors.selectColor)),
               subtitle: Wrap(
                 spacing: EternalMargin.smallMargin,

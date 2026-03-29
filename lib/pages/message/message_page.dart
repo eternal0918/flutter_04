@@ -201,10 +201,7 @@ class _MessageScrollViewState extends State<MessageScrollView> {
                           contentPadding: EdgeInsets.all(EternalPadding.smallPadding),
                           text: '已移除 ${userInfo.userName} 会话.',
                           textStyle: TextStyle(fontSize: EternalFontSize.regular(), color: EternalColors.titleColor),
-                          wrapToastAnimation: (controller, cancel, Widget child) => CustomAnimationWidget(
-                            controller: controller,
-                            child: child,
-                          ),
+                          wrapToastAnimation: (controller, cancel, Widget child) => CustomAnimationWidget(controller: controller, child: child),
                         );
                       },
                       background: Container(color: EternalColors.getDangerColor(), child: const Icon(Icons.remove_circle_outline)),

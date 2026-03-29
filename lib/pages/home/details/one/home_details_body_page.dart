@@ -20,7 +20,9 @@ import 'home_details_remark_second.dart';
 import 'home_details_tags.dart';
 
 class HomeDetailsBodyPage extends StatefulWidget {
-  const HomeDetailsBodyPage({super.key});
+  final ValueChanged<bool> onScrollFlagChanged;
+
+  HomeDetailsBodyPage({super.key, required this.onScrollFlagChanged});
 
   @override
   State<HomeDetailsBodyPage> createState() => _HomeDetailsBodyPageState();
@@ -40,7 +42,7 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
   // void _listenController() => setState(() {});
   final List<Widget> _cards = [];
 
-  Color _headBgColor = Colors.white12;
+  Color _headBgColor = Colors.black12;
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
     // _controller = SwipableStackController()..addListener(_listenController);
     super.initState();
     for (int i = 0; i < 20; i++) {
-      _cards.add(Image.network(EternalConstants.imageUrl, fit: BoxFit.cover));
+      _cards.add(Image.network(EternalConstants.getImage(), fit: BoxFit.cover));
     }
   }
 
@@ -71,6 +73,7 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
       if (!_isFlexibleSpaceBarClosed) {
         setState(() {
           _isFlexibleSpaceBarClosed = true;
+          widget.onScrollFlagChanged(_isFlexibleSpaceBarClosed);
           _headBgColor = Colors.transparent;
           // print("透明");
         });
@@ -79,7 +82,8 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
       if (_isFlexibleSpaceBarClosed) {
         setState(() {
           _isFlexibleSpaceBarClosed = false;
-          _headBgColor = Colors.white12;
+          widget.onScrollFlagChanged(_isFlexibleSpaceBarClosed);
+          _headBgColor = Colors.black12;
           // print("白色");
         });
       }
@@ -112,7 +116,7 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    filter: ImageFilter.blur(sigmaX: _isFlexibleSpaceBarClosed ? 0 : 5, sigmaY: _isFlexibleSpaceBarClosed ? 0 : 5),
                     child: Container(
                       padding: EdgeInsets.only(right: EternalPadding.normalPadding),
                       color: _headBgColor,
@@ -202,14 +206,17 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.width / 3 * 4,
                         clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 0.0), //阴影xy轴偏移量
-                              blurRadius: 10.0, //阴影模糊程度
-                              spreadRadius: 0 //阴影扩散程度
-                              )
-                        ]),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0.0, 0.0), //阴影xy轴偏移量
+                                  blurRadius: 10.0, //阴影模糊程度
+                                  spreadRadius: 0 //阴影扩散程度
+                                  )
+                            ],
+                            color: EternalColors.defaultColor),
                         child: _cards[itemIndex],
                       ),
                       Positioned(
@@ -248,22 +255,12 @@ class _HomeDetailsBodyPageState extends State<HomeDetailsBodyPage> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: EternalPadding.smallPadding),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ///文本内容
+                        ///图片生成参数内容
                         const HomeDetailsContent(),
-                        SizedBox(height: EternalMargin.smallMargin),
 
-                        ///标签
-                        // const HomeDetailsTags(),
-
-                        // const Divider(),
-                        SizedBox(height: EternalMargin.smallMargin),
-                        Text(
-                          "共 ${Random().nextInt(100)} 条评论",
-                          style: TextStyle(color: EternalColors.selectColor, fontSize: EternalFontSize.base()),
-                        ),
-                        SizedBox(height: EternalMargin.smallMargin),
+                        SizedBox(height: EternalMargin.normalMargin),
 
                         ///详情 二级评论区域
                         const HomeDetailsRemarkSecond(),

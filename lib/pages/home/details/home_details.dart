@@ -11,7 +11,7 @@ class HomeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
+      children: [
         HomeDetailsOne(),
         HomeDetailsTwo(),
       ],

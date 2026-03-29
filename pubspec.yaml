@@ -65,7 +65,7 @@ dependencies:
   smooth_sheets: 0.5.3   #底部弹窗
   photo_manager: 2.5.2 #获取本地图片
   image_picker: ^1.0.7 #打开系统相册
-  #lottie: 2.4.0 #lottie插件
+  lottie: 2.4.0 #lottie插件
   simple_shadow: ^0.3.1 #png图片阴影
   flutter_card_swiper: 7.0.0 #左右滑动的卡片堆叠效果
   swipable_stack: ^2.0.0
@@ -89,7 +89,8 @@ dependencies:
   connectivity_plus: ^5.0.2 #获取网络信息（网络类型 WiFi or 移动）
   faker: ^2.2.0  # 假数据（测试用）
   animations: ^2.0.8 # 页面切换（自然过渡）
-  permission_handler: 11.0.0
+#  permission_handler: 11.0.0 #权限管理
+  draggable_float_widget: ^0.1.0 #浮动拖拽组件
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -11,8 +11,7 @@ class HomeDetailsRemarkSecond extends StatefulWidget {
   _HomeDetailsRemarkSecondState createState() => _HomeDetailsRemarkSecondState();
 }
 
-class _HomeDetailsRemarkSecondState extends State<HomeDetailsRemarkSecond>
-    with WidgetsBindingObserver, EternalKeyboardHeight {
+class _HomeDetailsRemarkSecondState extends State<HomeDetailsRemarkSecond> with WidgetsBindingObserver, EternalKeyboardHeight {
   double bottom = 0;
   bool bottomFlag = true;
 
@@ -30,7 +29,7 @@ class _HomeDetailsRemarkSecondState extends State<HomeDetailsRemarkSecond>
       children: [
         Expanded(
           flex: 1,
-          child: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.randomImageUrl), radius: 22),
+          child: CircleAvatar(backgroundImage: NetworkImage(EternalConstants.getImage()), radius: 22),
         ),
         Expanded(
           flex: 5,
